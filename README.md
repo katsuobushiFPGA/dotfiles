@@ -28,6 +28,7 @@ bash bootstrap.sh
 | Neovim (最新版) | GitHub Releases から取得 | `brew install neovim` |
 | cmux | — | `brew install cmux` |
 | Powerlevel10k | ✅ | ✅ |
+| difit | ✅ | ✅ |
 
 ### 3. chezmoiで設定を反映
 

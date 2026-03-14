@@ -17,6 +17,9 @@ sh -c "$(curl -fsLS get.chezmoi.io)"
 # install mise
 curl https://mise.run | sh
 
+# install tools via mise (node, go, etc.)
+~/.local/bin/mise install
+
 # install oh-my-zsh
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
@@ -37,6 +40,11 @@ fi
 # install cmux (Mac only)
 if [[ "$(uname)" == "Darwin" ]] && ! command -v cmux &>/dev/null; then
   brew install cmux
+fi
+
+# install difit
+if ! ~/.local/bin/mise exec -- command -v difit &>/dev/null; then
+  ~/.local/bin/mise exec -- npm install -g difit
 fi
 
 # install powerlevel10k
