@@ -1,26 +1,4 @@
--- lazy.nvim のブートストラップ
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git", "clone", "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",
-    lazypath,
-  })
-end
-vim.opt.rtp:prepend(lazypath)
-
-require("lazy").setup({
-
-  -- カラースキーム
-  {
-    "folke/tokyonight.nvim",
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme("tokyonight-night")
-    end,
-  },
-
+return {
   -- ファジーファインダー
   {
     "nvim-telescope/telescope.nvim",
@@ -39,11 +17,14 @@ require("lazy").setup({
     event = { "BufReadPost", "BufNewFile" },
     config = function()
       require("nvim-treesitter.configs").setup({
-        ensure_installed = { "lua", "vim", "bash", "json", "yaml", "markdown" },
+        ensure_installed = {
+          "lua", "vim", "bash",
+          "php", "typescript", "tsx", "javascript",
+          "html", "css", "json", "yaml", "markdown",
+        },
         highlight = { enable = true },
-        indent = { enable = true },
+        indent    = { enable = true },
       })
     end,
   },
-
-})
+}
