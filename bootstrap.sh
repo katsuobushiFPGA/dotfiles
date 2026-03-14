@@ -22,6 +22,17 @@ if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 
+# install neovim
+if ! command -v nvim &>/dev/null; then
+  if [[ "$(uname)" == "Darwin" ]]; then
+    brew install neovim
+  else
+    curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+    tar -xzf nvim-linux-x86_64.tar.gz -C ~/.local/ --strip-components=1
+    rm nvim-linux-x86_64.tar.gz
+  fi
+fi
+
 # install powerlevel10k
 if [[ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]]; then
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
