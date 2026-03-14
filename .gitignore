@@ -1,0 +1,12 @@
+# chezmoi binary (bootstrap.sh でインストールするため不要)
+bin/
+
+# Claude Code のローカル状態
+.claude/
+
+# macOS
+.DS_Store
+
+# Vim
+*.swp
+*.swo
