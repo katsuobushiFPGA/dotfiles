@@ -1,3 +1,10 @@
 [tools]
 node = "22"
 go = "1.22"
+ripgrep = "latest"
+fd = "latest"
+fzf = "latest"
+bat = "latest"
+eza = "latest"
+zoxide = "latest"
+gh = "latest"

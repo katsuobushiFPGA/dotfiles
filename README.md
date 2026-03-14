@@ -80,6 +80,13 @@ p10k configure
 
 ```toml
 [tools]
-node = "22"
-go = "1.22"
+node    = "22"
+go      = "1.22"
+ripgrep = "latest"  # telescope live_grep に必要
+fd      = "latest"  # telescope find_files を高速化
+fzf     = "latest"  # fuzzy history検索（Ctrl+R強化）
+bat     = "latest"  # cat の代替（シンタックスハイライト）
+eza     = "latest"  # ls の代替
+zoxide  = "latest"  # z コマンドでディレクトリジャンプ
+gh      = "latest"  # GitHub CLI
 ```
