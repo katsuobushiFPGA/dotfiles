@@ -143,7 +143,11 @@ export PATH=$HOME/go/bin:$HOME/.opencode/bin:$PATH
 {{- end }}
 
 {{- if eq .chezmoi.os "darwin" }}
-# Homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# Homebrew (Apple Silicon: /opt/homebrew, Intel: /usr/local)
+if [[ -f /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -f /usr/local/bin/brew ]]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
 {{- end }}
 
