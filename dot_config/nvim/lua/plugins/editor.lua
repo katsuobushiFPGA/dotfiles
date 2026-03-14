@@ -15,16 +15,15 @@ return {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = {
-          "lua", "vim", "bash",
-          "php", "typescript", "tsx", "javascript",
-          "html", "css", "json", "yaml", "markdown",
-        },
-        highlight = { enable = true },
-        indent    = { enable = true },
-      })
-    end,
+    main  = "nvim-treesitter.configs",
+    opts  = {
+      ensure_installed = {
+        "lua", "vim", "bash",
+        "php", "typescript", "tsx", "javascript",
+        "html", "css", "json", "yaml", "markdown",
+      },
+      highlight = { enable = true },
+      indent    = { enable = true },
+    },
   },
 }
