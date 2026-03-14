@@ -34,6 +34,11 @@ if ! command -v nvim &>/dev/null; then
   fi
 fi
 
+# install cmux (Mac only)
+if [[ "$(uname)" == "Darwin" ]] && ! command -v cmux &>/dev/null; then
+  brew install cmux
+fi
+
 # install powerlevel10k
 if [[ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]]; then
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
