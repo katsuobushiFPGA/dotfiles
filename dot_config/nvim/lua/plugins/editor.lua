@@ -14,16 +14,13 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
-    main  = "nvim-treesitter.configs",
-    opts  = {
-      ensure_installed = {
+    lazy  = false,
+    config = function()
+      require("nvim-treesitter").install({
         "lua", "vim", "bash",
         "php", "typescript", "tsx", "javascript",
         "html", "css", "json", "yaml", "markdown",
-      },
-      highlight = { enable = true },
-      indent    = { enable = true },
-    },
+      })
+    end,
   },
 }
