@@ -1,0 +1,10 @@
+#!/bin/bash
+MSG="${1:-作業完了}"
+
+if [[ "$(uname -r)" == *microsoft* ]]; then
+  # WSL2
+  powershell.exe -Command "[System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms') | Out-Null; [System.Windows.Forms.MessageBox]::Show('$MSG', 'Claude')"
+elif [[ "$(uname)" == "Darwin" ]]; then
+  # Mac
+  osascript -e "display notification \"$MSG\" with title \"Claude\""
+fi

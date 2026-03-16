@@ -1,4 +1,17 @@
 {
   "voiceEnabled": true,
-  "language": "Japanese"
+  "language": "Japanese",
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/bin/claude-notify"
+          }
+        ]
+      }
+    ]
+  }
 }

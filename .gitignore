@@ -1,5 +1,5 @@
 # chezmoi binary (bootstrap.sh でインストールするため不要)
-bin/
+bin/chezmoi
 
 # Claude Code のローカル状態
 .claude/
