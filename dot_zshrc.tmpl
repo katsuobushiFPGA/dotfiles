@@ -75,6 +75,9 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+# compaudit（ディレクトリ権限チェック）をスキップして起動を高速化
+ZSH_DISABLE_COMPFIX=true
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
@@ -126,8 +129,13 @@ export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
 # Amazon Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/.local/share/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/zshrc.post.zsh"
 
-# mise
-eval "$(mise activate zsh)"
+# mise（起動コストが高いのでキャッシュする）
+_mise_cache="${XDG_CACHE_HOME:-$HOME/.cache}/mise/activate.zsh"
+if [[ ! -f "$_mise_cache" || "$HOME/.config/mise/config.toml" -nt "$_mise_cache" ]]; then
+  mkdir -p "$(dirname "$_mise_cache")"
+  mise activate zsh > "$_mise_cache"
+fi
+source "$_mise_cache"
 
 # fzf
 eval "$(fzf --zsh)"
