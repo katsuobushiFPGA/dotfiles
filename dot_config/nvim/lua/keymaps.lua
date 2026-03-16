@@ -19,3 +19,6 @@ map("v", ">", ">gv")
 -- 行移動（ビジュアルライン）
 map("n", "j", "gj")
 map("n", "k", "gk")
+
+-- ファイルツリー
+map("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Toggle file tree" })

@@ -1,3 +1,7 @@
+-- netrw を無効化（nvim-tree と競合するため、早期に設定）
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 local opt = vim.opt
 
 -- 行番号
