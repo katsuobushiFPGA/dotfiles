@@ -1,0 +1,35 @@
+[user]
+	email = {{ .email }}
+	name = kbushi
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = true
+
+[push]
+	autoSetupRemote = true
+
+[diff]
+	algorithm = histogram
+
+[rerere]
+	enabled = true
+
+[alias]
+	co = checkout
+	st = status
+	br = branch
+	lg = log --oneline --graph --decorate
+
+[credential]
+	helper = cache
+
+[credential "https://github.com"]
+	helper =
+	helper = !{{ .chezmoi.homeDir }}/.local/share/mise/shims/gh auth git-credential
+
+[credential "https://gist.github.com"]
+	helper =
+	helper = !{{ .chezmoi.homeDir }}/.local/share/mise/shims/gh auth git-credential
