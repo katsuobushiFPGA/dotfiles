@@ -133,7 +133,7 @@ export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
 _mise_cache="${XDG_CACHE_HOME:-$HOME/.cache}/mise/activate.zsh"
 if [[ ! -f "$_mise_cache" || "$HOME/.config/mise/config.toml" -nt "$_mise_cache" ]]; then
   mkdir -p "$(dirname "$_mise_cache")"
-  mise activate zsh > "$_mise_cache"
+  mise activate zsh --shims > "$_mise_cache"
 fi
 source "$_mise_cache"
 
@@ -159,7 +159,7 @@ if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-clou
 export LIBGL_ALWAYS_SOFTWARE=1
 
 # opencode
-export PATH=$HOME/go/bin:$HOME/.opencode/bin:$PATH
+export PATH=$HOME/go/bin:$HOME/.opencode/bin:$HOME/dotfiles/bin:$PATH
 {{- end }}
 
 {{- if eq .chezmoi.os "darwin" }}

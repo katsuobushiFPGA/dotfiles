@@ -1,21 +1,15 @@
 {
-  "voiceEnabled": true,
-  "language": "Japanese",
   "statusLine": {
     "type": "command",
     "command": "input=$(cat); printf '\\033[01;32m%s@%s\\033[00m:\\033[01;34m%s\\033[00m' \"$(whoami)\" \"$(hostname -s)\" \"$(echo \"$input\" | jq -r '.cwd')\""
   },
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/bin/claude-notify"
-          }
-        ]
-      }
-    ]
+  "language": "Japanese",
+  "voiceEnabled": true,
+  "model": "opus",
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "sandbox": {
+    "enabled": true
   }
 }
