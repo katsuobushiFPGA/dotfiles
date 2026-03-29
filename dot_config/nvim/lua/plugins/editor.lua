@@ -10,6 +10,15 @@ return {
     },
   },
 
+  -- JSX/HTML タグの自動クローズ・ペアリネーム
+  {
+    "windwp/nvim-ts-autotag",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
+  },
+
   -- シンタックスハイライト
   {
     "nvim-treesitter/nvim-treesitter",
