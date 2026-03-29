@@ -58,3 +58,8 @@ if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
   ~/.tmux/plugins/tpm/bin/install_plugins
 fi
+
+# install claude skills
+if command -v jq &>/dev/null; then
+  "$HOME/dotfiles/bin/install-claude-skills"
+fi

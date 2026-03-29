@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+LOCK_FILE="${HOME}/.agents/.skill-lock.json"
+SKILLS_DIR="${HOME}/.agents/skills"
+CLAUDE_SKILLS_DIR="${HOME}/.claude/skills"
+
+if [[ ! -f "$LOCK_FILE" ]]; then
+  echo "No skill lock file found at $LOCK_FILE"
+  exit 0
+fi
+
+if ! command -v jq &>/dev/null; then
+  echo "jq is required but not installed"
+  exit 1
+fi
+
+mkdir -p "$SKILLS_DIR" "$CLAUDE_SKILLS_DIR"
+
+TMPDIR_BASE=$(mktemp -d)
+trap 'rm -rf "$TMPDIR_BASE"' EXIT
+
+while IFS= read -r source_url; do
+  repo_key=$(echo "$source_url" | sed 's|https://github.com/||;s|\.git$||;s|/|-|g')
+  tmp_dir="$TMPDIR_BASE/$repo_key"
+
+  echo "Cloning $source_url..."
+  git clone --depth=1 --filter=blob:none --sparse "$source_url" "$tmp_dir" -q
+
+  while IFS=$'\t' read -r skill_name skill_path; do
+    skill_folder=$(dirname "$skill_path")
+    git -C "$tmp_dir" sparse-checkout add "$skill_folder" -q 2>/dev/null || true
+
+    if [[ -d "$tmp_dir/$skill_folder" ]]; then
+      rm -rf "${SKILLS_DIR:?}/$skill_name"
+      cp -r "$tmp_dir/$skill_folder" "$SKILLS_DIR/$skill_name"
+      ln -snf "../../.agents/skills/$skill_name" "$CLAUDE_SKILLS_DIR/$skill_name"
+      echo "  ✓ $skill_name"
+    else
+      echo "  ✗ $skill_name (path not found: $skill_folder)"
+    fi
+  done < <(jq -r --arg url "$source_url" \
+    '.skills | to_entries[] | select(.value.sourceUrl == $url) | [.key, .value.skillPath] | @tsv' \
+    "$LOCK_FILE")
+
+done < <(jq -r '.skills[].sourceUrl' "$LOCK_FILE" | sort -u)
+
+echo ""
+echo "Done: $(ls "$SKILLS_DIR" | wc -l | tr -d ' ') skills installed"
