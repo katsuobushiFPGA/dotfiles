@@ -10,16 +10,6 @@
   "effortLevel": "high",
   "voiceEnabled": true,
   "hooks": {
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/mark-file-changed.sh"
-          }
-        ]
-      }
-    ],
     "Stop": [
       {
         "hooks": [

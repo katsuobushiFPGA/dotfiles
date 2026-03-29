@@ -9,6 +9,7 @@ TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty')
 
 case "$TOOL_NAME" in
   Write|Edit|NotebookEdit)
-    touch "/tmp/claude-file-changed-${SESSION_ID}"
+    mkdir -p "${HOME}/.cache/claude-hooks"
+    touch "${HOME}/.cache/claude-hooks/file-changed-${SESSION_ID}"
     ;;
 esac
