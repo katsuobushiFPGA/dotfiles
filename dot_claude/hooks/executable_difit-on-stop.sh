@@ -11,6 +11,6 @@ FLAG_FILE="/tmp/claude-file-changed-${SESSION_ID}"
 rm -f "$FLAG_FILE"
 
 if ! git diff --quiet 2>/dev/null || ! git diff --staged --quiet 2>/dev/null; then
-  nohup difit HEAD > /dev/null 2>&1 &
+  nohup difit working > /dev/null 2>&1 &
   disown
 fi
