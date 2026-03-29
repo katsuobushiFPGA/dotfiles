@@ -16,11 +16,17 @@ return {
     build = ":TSUpdate",
     lazy  = false,
     config = function()
-      require("nvim-treesitter").install({
+      local langs = {
         "lua", "vim", "bash",
         "php", "typescript", "tsx", "javascript",
         "html", "css", "json", "yaml", "markdown",
-      })
+      }
+      local to_install = vim.tbl_filter(function(lang)
+        return not pcall(vim.treesitter.language.inspect, lang)
+      end, langs)
+      if #to_install > 0 then
+        require("nvim-treesitter").install(to_install)
+      end
     end,
   },
 }
