@@ -21,4 +21,4 @@ map("n", "j", "gj")
 map("n", "k", "gk")
 
 -- ファイルツリー
-map("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Toggle file tree" })
+map("n", "<leader>t", ":NvimTreeToggle<CR>", { desc = "Toggle file tree" })

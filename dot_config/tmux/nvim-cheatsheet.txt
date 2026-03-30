@@ -5,7 +5,7 @@
 [ ファイル操作 ]
   <leader>w       保存
   <leader>q       閉じる
-  <leader>e       ファイルツリー 開閉
+  <leader>t       ファイルツリー 開閉
 
 [ ウィンドウ移動 ]
   Ctrl+h/j/k/l    左/下/上/右のウィンドウへ移動
