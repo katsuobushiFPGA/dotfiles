@@ -59,6 +59,17 @@ if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
   ~/.tmux/plugins/tpm/bin/install_plugins
 fi
 
+# install JetBrainsMono Nerd Font
+if ! fc-list | grep -qi "JetBrainsMono"; then
+  font_dir="$HOME/.local/share/fonts"
+  mkdir -p "$font_dir"
+  curl -Lo /tmp/JetBrainsMono.zip \
+    "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
+  unzip -o /tmp/JetBrainsMono.zip -d "$font_dir/JetBrainsMono"
+  rm /tmp/JetBrainsMono.zip
+  fc-cache -fv
+fi
+
 # install claude skills
 if command -v jq &>/dev/null; then
   "$HOME/dotfiles/bin/install-claude-skills"
