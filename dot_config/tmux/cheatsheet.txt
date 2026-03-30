@@ -22,6 +22,8 @@
  [セッション]
   d    デタッチ
   $    名前を変更
+  Ctrl+s  セッションを保存 (resurrect)
+  Ctrl+r  セッションを復元 (resurrect)
 
  [その他]
   r    設定リロード (custom)
