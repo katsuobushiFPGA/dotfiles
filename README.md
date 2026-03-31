@@ -74,6 +74,16 @@ p10k configure
 **Mac のみ適用：**
 - Homebrew の初期化（Apple Silicon / Intel 両対応）
 
+## 手動セットアップ
+
+### Chrome 拡張
+
+以下は手動でインストールする：
+
+| 拡張 | リンク |
+|---|---|
+| React Developer Tools | https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi |
+
 ## ツールバージョン（mise管理）
 
 `~/.config/mise/config.toml` で管理：
