@@ -74,3 +74,14 @@ fi
 if command -v jq &>/dev/null; then
   "$HOME/dotfiles/bin/install-claude-skills"
 fi
+
+# register MCP servers for claude code
+if command -v claude &>/dev/null; then
+  claude mcp get chrome-devtools --scope user &>/dev/null || \
+    claude mcp add --scope user chrome-devtools -- npx -y chrome-devtools-mcp@latest --slim --headless
+  claude mcp get playwright --scope user &>/dev/null || \
+    claude mcp add --scope user playwright -- npx @playwright/mcp@latest --browser chromium
+fi
+
+# install playwright chromium browser
+npx playwright install chromium 2>/dev/null || true
