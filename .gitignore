@@ -4,6 +4,9 @@ bin/chezmoi
 # Claude Code のローカル状態
 .claude/
 
+# Playwright MCP のログ・スナップショット
+.playwright-mcp/
+
 # tmux plugins (TPM がインストールするため不要)
 dot_config/tmux/plugins/
 
