@@ -12,7 +12,19 @@ else
 fi
 
 # install chezmoi
-sh -c "$(curl -fsLS get.chezmoi.io)"
+sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/bin
+
+# apply dotfiles via chezmoi
+_CHEZMOI_CONFIG="$HOME/.config/chezmoi/chezmoi.toml"
+if [[ ! -f "$_CHEZMOI_CONFIG" ]]; then
+  mkdir -p "$(dirname "$_CHEZMOI_CONFIG")"
+  read -r -p "Enter your email for git config: " _GIT_EMAIL
+  cat > "$_CHEZMOI_CONFIG" <<EOF
+[data]
+  email = "$_GIT_EMAIL"
+EOF
+fi
+~/.local/bin/chezmoi apply --source "$(cd "$(dirname "$0")" && pwd)"
 
 # install mise
 curl https://mise.run | sh
@@ -25,21 +37,17 @@ if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 
-# install neovim
-if ! command -v nvim &>/dev/null; then
-  if [[ "$(uname)" == "Darwin" ]]; then
-    brew install neovim
-  else
+# install packages via Brewfile (Mac only)
+if [[ "$(uname)" == "Darwin" ]]; then
+  brew bundle --file="$(cd "$(dirname "$0")" && pwd)/Brewfile"
+else
+  # install neovim on Linux
+  if ! command -v nvim &>/dev/null; then
     ARCH=$(uname -m)
     curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-${ARCH}.tar.gz"
     tar -xzf "nvim-linux-${ARCH}.tar.gz" -C ~/.local/ --strip-components=1
     rm "nvim-linux-${ARCH}.tar.gz"
   fi
-fi
-
-# install cmux (Mac only)
-if [[ "$(uname)" == "Darwin" ]] && ! command -v cmux &>/dev/null; then
-  brew install cmux
 fi
 
 # install difit
