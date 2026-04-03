@@ -6,8 +6,7 @@
 
 | パス | 役割 |
 |---|---|
-| `dotfiles/skills-lock.json` | `npx skills` のロックファイル（chezmoi で `~/skills-lock.json` にデプロイ） |
-| `~/.agents/.skill-lock.json` | カスタムスクリプト用ロックファイル（`install-claude-skills` が参照） |
+| `~/.agents/.skill-lock.json` | `npx skills` のロックファイル（`dot_agents/dot_skill-lock.json` から chezmoi でデプロイ） |
 | `~/.agents/skills/<name>/` | スキルの実体（外部リポジトリからインストール） |
 | `~/.claude/skills/<name>` | `../../.agents/skills/<name>` へのシンボリックリンク |
 | `dotfiles/dot_claude/skills/<name>.md` | 自作スキル（chezmoi で `~/.claude/skills/` に直接デプロイ） |
@@ -33,10 +32,9 @@ rmdir ~/dotfiles/.agents/skills ~/dotfiles/.agents
 
 ### 新しい環境での再現
 
-スキルの再インストールには2つの仕組みがある：
+`dot_agents/dot_skill-lock.json` を dotfiles の git で管理しており、新しい環境では `bootstrap.sh` が `bin/install-claude-skills` を呼び出して `~/.agents/.skill-lock.json` を読み再インストールする。
 
-- **`npx skills` 経由**（推奨）: `skills-lock.json` が dotfiles で管理されており、`npx skills experimental_install` で再インストールできる
-- **カスタムスクリプト経由**: `bootstrap.sh` が `bin/install-claude-skills` を呼び出し、`~/.agents/.skill-lock.json` を読んでスキルを再インストールする（別フォーマット）
+`npx skills experimental_install` でも同様に再インストールできる。
 
 ### 自作スキルを追加する
 
