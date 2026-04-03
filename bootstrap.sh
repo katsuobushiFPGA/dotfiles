@@ -14,6 +14,12 @@ fi
 # install chezmoi
 sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/bin
 
+# symlink dotfiles to chezmoi default source dir
+mkdir -p ~/.local/share
+if [[ ! -e ~/.local/share/chezmoi ]]; then
+  ln -s "$(cd "$(dirname "$0")" && pwd)" ~/.local/share/chezmoi
+fi
+
 # apply dotfiles via chezmoi
 _CHEZMOI_CONFIG="$HOME/.config/chezmoi/chezmoi.toml"
 if [[ ! -f "$_CHEZMOI_CONFIG" ]]; then
