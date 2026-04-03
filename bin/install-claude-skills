@@ -25,11 +25,10 @@ while IFS= read -r source_url; do
   tmp_dir="$TMPDIR_BASE/$repo_key"
 
   echo "Cloning $source_url..."
-  git clone --depth=1 --filter=blob:none --sparse "$source_url" "$tmp_dir" -q
+  git clone --depth=1 "$source_url" "$tmp_dir" -q
 
   while IFS=$'\t' read -r skill_name skill_path; do
     skill_folder=$(dirname "$skill_path")
-    git -C "$tmp_dir" sparse-checkout add "$skill_folder" -q 2>/dev/null || true
 
     if [[ -d "$tmp_dir/$skill_folder" ]]; then
       rm -rf "${SKILLS_DIR:?}/$skill_name"
