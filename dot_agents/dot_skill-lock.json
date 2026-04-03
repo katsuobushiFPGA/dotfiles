@@ -81,6 +81,15 @@
       "skillFolderHash": "2a2382f6a79c5f6151734643a74a915f834f9b26",
       "installedAt": "2026-03-29T01:26:06.186Z",
       "updatedAt": "2026-03-29T01:26:06.186Z"
+    },
+    "difit-review": {
+      "source": "yoshiko-pg/difit",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/yoshiko-pg/difit.git",
+      "skillPath": "skills/difit-review/SKILL.md",
+      "skillFolderHash": "faf57eb1985cda1f74101afa4a14e5905e248d0c",
+      "installedAt": "2026-04-03T08:49:00.000Z",
+      "updatedAt": "2026-04-03T08:49:00.000Z"
     }
   },
   "dismissed": {
