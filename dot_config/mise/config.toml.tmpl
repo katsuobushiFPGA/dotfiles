@@ -2,10 +2,12 @@
 node = "22"
 go = "1.22"
 ripgrep = "latest"
-fd = "latest"
 fzf = "latest"
 bat = "latest"
 eza = "latest"
 zoxide = "latest"
 gh = "latest"
+{{ if eq .chezmoi.os "linux" -}}
+fd = "latest"
 delta = "latest"
+{{ end -}}
