@@ -91,11 +91,16 @@ if ! _font_check; then
   mkdir -p "$font_dir"
   curl -Lo /tmp/JetBrainsMono.zip \
     "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
-  unzip -o /tmp/JetBrainsMono.zip -d "$font_dir"
-  rm /tmp/JetBrainsMono.zip
-  if [[ "$(uname)" != "Darwin" ]]; then
+  if [[ "$(uname)" == "Darwin" ]]; then
+    unzip -o /tmp/JetBrainsMono.zip \
+      "JetBrainsMonoNerdFontMono-Regular.ttf" \
+      "JetBrainsMonoNerdFontMono-Bold.ttf" \
+      -d "$font_dir"
+  else
+    unzip -o /tmp/JetBrainsMono.zip -d "$font_dir"
     fc-cache -fv
   fi
+  rm /tmp/JetBrainsMono.zip
 fi
 
 # install claude skills
