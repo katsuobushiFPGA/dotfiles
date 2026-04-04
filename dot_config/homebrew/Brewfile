@@ -1,4 +1,8 @@
 brew "neovim"
 brew "fd"
 brew "git-delta"
+brew "expect"
 cask "cmux"
+cask "visual-studio-code"
+cask "slack"
+cask "google-chrome"

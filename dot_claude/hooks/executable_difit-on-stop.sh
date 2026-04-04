@@ -26,10 +26,13 @@ CURRENT_STATE=$(echo "$CURRENT_HEAD"; git diff HEAD 2>/dev/null; git status --po
 CURRENT_HASH=$(echo "$CURRENT_STATE" | shasum | cut -d' ' -f1)
 
 [[ "$(cat "$HASH_FILE" 2>/dev/null)" == "$CURRENT_HASH" ]] && exit 0
-echo "$CURRENT_HASH" > "$HASH_FILE"
 
 if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
   ~/.claude/hooks/difit-open.sh working --include-untracked
 elif [[ -n "$INITIAL_HEAD" && "$INITIAL_HEAD" != "$CURRENT_HEAD" ]]; then
   ~/.claude/hooks/difit-open.sh "$INITIAL_HEAD" "$CURRENT_HEAD"
+else
+  exit 0
 fi
+
+echo "$CURRENT_HASH" > "$HASH_FILE"

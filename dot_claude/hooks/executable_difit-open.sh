@@ -1,5 +1,5 @@
 #!/bin/bash
-# difit を cmux 内蔵ブラウザ（または WSL フォールバック）で開く
+# difit を cmux 内蔵ブラウザ（または macOS デフォルトブラウザ / WSL）で開く
 # 使い方: difit-open.sh [difit の引数...]
 
 export PATH="$HOME/.local/share/mise/shims:/usr/local/bin:$PATH"
@@ -26,9 +26,12 @@ done
 rm -f "$TMPFILE"
 
 if [[ -n "$URL" ]]; then
-  CMUX_BIN=$(_find_cmux)
-  if [[ -n "$CMUX_BIN" ]] && "$CMUX_BIN" browser open "$URL" 2>/dev/null; then
-    :
+  # cmux ターミナル内なら cmux 内蔵ブラウザを使う
+  if [[ -n "$CMUX_WORKSPACE_ID" ]]; then
+    CMUX_BIN=$(_find_cmux)
+    [[ -n "$CMUX_BIN" ]] && "$CMUX_BIN" browser open "$URL" 2>/dev/null
+  elif [[ "$(uname)" == "Darwin" ]]; then
+    open "$URL"
   elif grep -qi microsoft /proc/version 2>/dev/null; then
     explorer.exe "$URL" 2>/dev/null || true
   fi
