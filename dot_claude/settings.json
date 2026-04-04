@@ -25,7 +25,7 @@
           {
             "type": "command",
             "if": "Bash(git commit*)",
-            "command": "difit HEAD --clean 2>/dev/null || true",
+            "command": "~/.claude/hooks/difit-open.sh HEAD --clean",
             "async": true
           }
         ]

@@ -27,26 +27,7 @@ CURRENT_HASH=$(echo "$CURRENT_STATE" | shasum | cut -d' ' -f1)
 echo "$CURRENT_HASH" > "$HASH_FILE"
 
 launch_difit() {
-  local TMPFILE
-  TMPFILE=$(mktemp)
-  nohup difit "$@" --no-open > "$TMPFILE" 2>&1 &
-  disown
-
-  local URL
-  for _ in $(seq 1 20); do
-    URL=$(grep -o 'http://localhost:[0-9]*' "$TMPFILE" 2>/dev/null | head -1)
-    [[ -n "$URL" ]] && break
-    sleep 0.2
-  done
-  rm -f "$TMPFILE"
-
-  if [[ -n "$URL" ]]; then
-    if cmux browser open "$URL" 2>/dev/null; then
-      : # cmux で開いた
-    elif grep -qi microsoft /proc/version 2>/dev/null; then
-      explorer.exe "$URL" 2>/dev/null || true
-    fi
-  fi
+  ~/.claude/hooks/difit-open.sh "$@"
 }
 
 if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
