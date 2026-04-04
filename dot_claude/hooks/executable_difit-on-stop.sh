@@ -13,6 +13,7 @@ FLAG_FILE="${HOME}/.cache/claude-hooks/file-changed-${SESSION_ID}"
 rm -f "$FLAG_FILE"
 
 if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
+  pgrep -f "difit working" > /dev/null && exit 0
   nohup difit working --include-untracked > /dev/null 2>&1 &
   disown
 fi
