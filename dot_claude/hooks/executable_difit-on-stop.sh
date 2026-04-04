@@ -12,13 +12,18 @@ FLAG_FILE="${HOME}/.cache/claude-hooks/file-changed-${SESSION_ID}"
 [[ -f "$FLAG_FILE" ]] || exit 0
 rm -f "$FLAG_FILE"
 
-DIFF_HASH=$(git diff HEAD 2>/dev/null; git status --porcelain 2>/dev/null)
-DIFF_HASH=$(echo "$DIFF_HASH" | shasum | cut -d' ' -f1)
-HASH_FILE="${HOME}/.cache/claude-hooks/difit-last-hash-$(git rev-parse --show-toplevel | tr '/' '_')"
+REPO_KEY=$(git rev-parse --show-toplevel | tr '/' '_')
+HASH_FILE="${HOME}/.cache/claude-hooks/difit-last-hash-${REPO_KEY}"
+
+CURRENT_STATE=$(git rev-parse HEAD 2>/dev/null; git diff HEAD 2>/dev/null; git status --porcelain 2>/dev/null)
+CURRENT_HASH=$(echo "$CURRENT_STATE" | shasum | cut -d' ' -f1)
+
+[[ "$(cat "$HASH_FILE" 2>/dev/null)" == "$CURRENT_HASH" ]] && exit 0
+echo "$CURRENT_HASH" > "$HASH_FILE"
 
 if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
-  [[ "$(cat "$HASH_FILE" 2>/dev/null)" == "$DIFF_HASH" ]] && exit 0
-  echo "$DIFF_HASH" > "$HASH_FILE"
   nohup difit working --include-untracked > /dev/null 2>&1 &
-  disown
+else
+  nohup difit HEAD > /dev/null 2>&1 &
 fi
+disown
