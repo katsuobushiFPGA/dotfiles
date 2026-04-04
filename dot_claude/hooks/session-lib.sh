@@ -10,5 +10,5 @@ session_diff_args() {
   local initial_head current_head
   initial_head=$(cat "${CACHE_DIR}/initial-head-${session_id}" 2>/dev/null)
   current_head=$(git rev-parse HEAD 2>/dev/null)
-  [[ -n "$initial_head" && "$initial_head" != "$current_head" ]] && echo "${initial_head}..${current_head}"
+  [[ -n "$initial_head" && "$initial_head" != "$current_head" ]] && echo "${initial_head} ${current_head}"
 }

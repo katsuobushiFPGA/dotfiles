@@ -31,5 +31,5 @@ echo "$CURRENT_HASH" > "$HASH_FILE"
 if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
   ~/.claude/hooks/difit-open.sh working --include-untracked
 elif [[ -n "$INITIAL_HEAD" && "$INITIAL_HEAD" != "$CURRENT_HEAD" ]]; then
-  ~/.claude/hooks/difit-open.sh "${INITIAL_HEAD}..${CURRENT_HEAD}"
+  ~/.claude/hooks/difit-open.sh "$INITIAL_HEAD" "$CURRENT_HEAD"
 fi

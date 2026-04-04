@@ -12,7 +12,8 @@ SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // empty')
 DIFF_ARGS=$(session_diff_args "$SESSION_ID")
 
 if [[ -n "$DIFF_ARGS" ]]; then
-  ~/.claude/hooks/difit-open.sh "$DIFF_ARGS"
+  # shellcheck disable=SC2086
+  ~/.claude/hooks/difit-open.sh $DIFF_ARGS
 else
   ~/.claude/hooks/difit-open.sh HEAD --clean
 fi
