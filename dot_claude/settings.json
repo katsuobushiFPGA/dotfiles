@@ -4,13 +4,9 @@
     "command": "input=$(cat); printf '\\033[01;32m%s@%s\\033[00m:\\033[01;34m%s\\033[00m' \"$(whoami)\" \"$(hostname -s)\" \"$(echo \"$input\" | jq -r '.cwd')\""
   },
   "language": "Japanese",
-  "sandbox": {
-    "enabled": true
-  },
   "effortLevel": "high",
   "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "PATH": "$HOME/.local/share/mise/shims:$PATH"
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "voiceEnabled": true,
   "hooks": {
@@ -20,6 +16,17 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/mark-file-changed.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(git commit*)",
+            "command": "difit HEAD --clean 2>/dev/null || true",
+            "async": true
           }
         ]
       }
@@ -35,5 +42,8 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true
   }
 }
