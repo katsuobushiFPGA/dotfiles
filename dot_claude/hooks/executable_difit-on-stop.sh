@@ -15,7 +15,12 @@ rm -f "$FLAG_FILE"
 REPO_KEY=$(git rev-parse --show-toplevel | tr '/' '_')
 HASH_FILE="${HOME}/.cache/claude-hooks/difit-last-hash-${REPO_KEY}"
 
-CURRENT_STATE=$(git rev-parse HEAD 2>/dev/null; git diff HEAD 2>/dev/null; git status --porcelain 2>/dev/null)
+CURRENT_HEAD=$(git rev-parse HEAD 2>/dev/null)
+INITIAL_HEAD_FILE="${HOME}/.cache/claude-hooks/initial-head-${SESSION_ID}"
+INITIAL_HEAD=$(cat "$INITIAL_HEAD_FILE" 2>/dev/null)
+rm -f "$INITIAL_HEAD_FILE"
+
+CURRENT_STATE=$(echo "$CURRENT_HEAD"; git diff HEAD 2>/dev/null; git status --porcelain 2>/dev/null)
 CURRENT_HASH=$(echo "$CURRENT_STATE" | shasum | cut -d' ' -f1)
 
 [[ "$(cat "$HASH_FILE" 2>/dev/null)" == "$CURRENT_HASH" ]] && exit 0
@@ -23,7 +28,9 @@ echo "$CURRENT_HASH" > "$HASH_FILE"
 
 if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
   nohup difit working --include-untracked > /dev/null 2>&1 &
+elif [[ -n "$INITIAL_HEAD" && "$INITIAL_HEAD" != "$CURRENT_HEAD" ]]; then
+  nohup difit "$INITIAL_HEAD..$CURRENT_HEAD" > /dev/null 2>&1 &
 else
-  nohup difit HEAD > /dev/null 2>&1 &
+  exit 0
 fi
 disown
