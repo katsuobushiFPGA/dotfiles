@@ -24,8 +24,7 @@
         "hooks": [
           {
             "type": "command",
-            "if": "Bash(git commit*)",
-            "command": "~/.claude/hooks/difit-open.sh HEAD --clean",
+            "command": "~/.claude/hooks/difit-on-commit.sh",
             "async": true
           }
         ]
