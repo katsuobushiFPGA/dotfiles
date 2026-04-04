@@ -4,6 +4,15 @@
 INPUT=$(cat)
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
 
-[[ "$COMMAND" == git\ commit* ]] || exit 0
+[[ "$COMMAND" == *"git commit"* ]] || exit 0
 
-~/.claude/hooks/difit-open.sh HEAD --clean
+SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // empty')
+INITIAL_HEAD_FILE="${HOME}/.cache/claude-hooks/initial-head-${SESSION_ID}"
+INITIAL_HEAD=$(cat "$INITIAL_HEAD_FILE" 2>/dev/null)
+CURRENT_HEAD=$(git rev-parse HEAD 2>/dev/null)
+
+if [[ -n "$INITIAL_HEAD" && "$INITIAL_HEAD" != "$CURRENT_HEAD" ]]; then
+  ~/.claude/hooks/difit-open.sh "$INITIAL_HEAD..$CURRENT_HEAD"
+else
+  ~/.claude/hooks/difit-open.sh HEAD --clean
+fi
