@@ -45,7 +45,7 @@ fi
 
 # install packages via Brewfile (Mac only)
 if [[ "$(uname)" == "Darwin" ]]; then
-  brew bundle --file="$(cd "$(dirname "$0")" && pwd)/Brewfile"
+  brew bundle --file="$(cd "$(dirname "$0")" && pwd)/dot_config/homebrew/Brewfile"
 else
   # install neovim on Linux
   if ! command -v nvim &>/dev/null; then

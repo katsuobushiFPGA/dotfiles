@@ -1,7 +1,7 @@
 #!/bin/bash
 # git 管理下で、このセッションでファイル変更があった場合に difit で差分を表示する
 
-export PATH="$HOME/.local/share/mise/shims:$PATH"
+export PATH="$HOME/.local/share/mise/shims:/usr/local/bin:$PATH"
 
 INPUT=$(cat)
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // empty')

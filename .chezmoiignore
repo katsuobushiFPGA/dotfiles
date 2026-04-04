@@ -1,3 +1,4 @@
 bin/
 bootstrap.sh
+README.md
 .config/tmux/plugins/
