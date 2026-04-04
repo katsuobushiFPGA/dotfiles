@@ -26,11 +26,33 @@ CURRENT_HASH=$(echo "$CURRENT_STATE" | shasum | cut -d' ' -f1)
 [[ "$(cat "$HASH_FILE" 2>/dev/null)" == "$CURRENT_HASH" ]] && exit 0
 echo "$CURRENT_HASH" > "$HASH_FILE"
 
+launch_difit() {
+  local TMPFILE
+  TMPFILE=$(mktemp)
+  nohup difit "$@" --no-open > "$TMPFILE" 2>&1 &
+  disown
+
+  local URL
+  for _ in $(seq 1 20); do
+    URL=$(grep -o 'http://localhost:[0-9]*' "$TMPFILE" 2>/dev/null | head -1)
+    [[ -n "$URL" ]] && break
+    sleep 0.2
+  done
+  rm -f "$TMPFILE"
+
+  if [[ -n "$URL" ]]; then
+    if cmux browser open "$URL" 2>/dev/null; then
+      : # cmux で開いた
+    elif grep -qi microsoft /proc/version 2>/dev/null; then
+      explorer.exe "$URL" 2>/dev/null || true
+    fi
+  fi
+}
+
 if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
-  nohup difit working --include-untracked > /dev/null 2>&1 &
+  launch_difit working --include-untracked
 elif [[ -n "$INITIAL_HEAD" && "$INITIAL_HEAD" != "$CURRENT_HEAD" ]]; then
-  nohup difit "$INITIAL_HEAD..$CURRENT_HEAD" > /dev/null 2>&1 &
+  launch_difit "$INITIAL_HEAD..$CURRENT_HEAD"
 else
   exit 0
 fi
-disown
