@@ -61,6 +61,8 @@ p10k configure
 | `dot_config/nvim/` | `~/.config/nvim/` |
 | `dot_config/tmux/tmux.conf` | `~/.config/tmux/tmux.conf` |
 | `dot_claude/settings.json` | `~/.claude/settings.json` |
+| `dot_claude/hooks/` | `~/.claude/hooks/` |
+| `dot_claude/CLAUDE.md` | `~/.claude/CLAUDE.md` |
 
 ## OS差分
 
@@ -73,6 +75,17 @@ p10k configure
 
 **Mac のみ適用：**
 - Homebrew の初期化（Apple Silicon / Intel 両対応）
+
+## Claude Code フック
+
+`dot_claude/hooks/` に Claude Code の PostToolUse / Stop フックを管理している。
+
+| フック | 役割 |
+|---|---|
+| `difit-on-commit.sh` | `git commit` を含むコマンド実行後、セッション全差分を difit で表示 |
+| `difit-on-stop.sh` | セッション終了時、変更があれば差分を difit で表示 |
+| `difit-open.sh` | difit を cmux 内蔵ブラウザ（または WSL フォールバック）で開く共通スクリプト |
+| `mark-file-changed.sh` | ツール使用時にセッションフラグとセッション開始 HEAD を記録 |
 
 ## 手動セットアップ
 

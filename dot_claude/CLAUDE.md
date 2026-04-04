@@ -60,3 +60,14 @@ git 差分を GitHub 風ビューアで確認できる CLI。
 - アップグレード: `npm install -g difit@latest`
 
 `/difit-review` スキルで差分レビュー＋コメント付き起動ができる。
+
+### Claude Code フック連携
+
+| フック | タイミング | 動作 |
+|---|---|---|
+| `difit-on-commit.sh` | PostToolUse (Bash) | コマンド中に `git commit` が含まれると起動。セッション開始時の HEAD から現在 HEAD までの全差分を表示 |
+| `difit-on-stop.sh` | Stop | ファイル変更があったセッション終了時に起動。未コミット変更があれば working diff、コミット済みならセッション全差分を表示 |
+
+**セッション差分の仕組み：**  
+`mark-file-changed.sh`（PostToolUse）が初回ツール使用時に `INITIAL_HEAD` をキャッシュに記録し、  
+コミット・セッション終了時に `INITIAL_HEAD..CURRENT_HEAD` の範囲で difit を起動する。
