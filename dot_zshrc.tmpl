@@ -124,16 +124,35 @@ source $ZSH/oh-my-zsh.sh
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
 
 export DOTNET_ROOT=$HOME/.dotnet
-export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
+export PATH=$HOME/.local/bin:$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
 
 #run-parts /etc/update-motd.d
 
-# Amazon Q post block. Keep at the bottom of this file.
-[[ -f "${HOME}/.local/share/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/zshrc.post.zsh"
+{{- if eq .chezmoi.os "darwin" }}
+# Homebrew (Apple Silicon: /opt/homebrew, Intel: /usr/local)
+if [[ -f /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -f /usr/local/bin/brew ]]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+{{- end }}
+
+{{- if $isWSL }}
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
+
+export LIBGL_ALWAYS_SOFTWARE=1
+
+# opencode
+export PATH=$HOME/go/bin:$HOME/.opencode/bin:$HOME/dotfiles/bin:$PATH
+{{- end }}
 
 # mise（起動コストが高いのでキャッシュする）
 _mise_cache="${XDG_CACHE_HOME:-$HOME/.cache}/mise/activate.zsh"
-if [[ ! -f "$_mise_cache" || "$HOME/.config/mise/config.toml" -nt "$_mise_cache" ]]; then
+if [[ ! -s "$_mise_cache" || "$HOME/.config/mise/config.toml" -nt "$_mise_cache" ]]; then
   mkdir -p "$(dirname "$_mise_cache")"
   mise activate zsh --shims > "$_mise_cache"
 fi
@@ -151,25 +170,6 @@ alias ll='eza --icons -l'
 alias la='eza --icons -la'
 alias cat='bat --paging=never'
 
-{{- if $isWSL }}
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
-
-export LIBGL_ALWAYS_SOFTWARE=1
-
-# opencode
-export PATH=$HOME/go/bin:$HOME/.opencode/bin:$HOME/dotfiles/bin:$PATH
-{{- end }}
-
-{{- if eq .chezmoi.os "darwin" }}
-# Homebrew (Apple Silicon: /opt/homebrew, Intel: /usr/local)
-if [[ -f /opt/homebrew/bin/brew ]]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [[ -f /usr/local/bin/brew ]]; then
-  eval "$(/usr/local/bin/brew shellenv)"
-fi
-{{- end }}
+# Amazon Q post block. Keep at the bottom of this file.
+[[ -f "${HOME}/.local/share/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/.local/share/amazon-q/shell/zshrc.post.zsh"
 
