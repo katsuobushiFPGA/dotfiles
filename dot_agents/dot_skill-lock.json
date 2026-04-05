@@ -90,6 +90,15 @@
       "skillFolderHash": "faf57eb1985cda1f74101afa4a14e5905e248d0c",
       "installedAt": "2026-04-03T08:49:00.000Z",
       "updatedAt": "2026-04-03T08:49:00.000Z"
+    },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/agent-skills.git",
+      "skillPath": "skills/react-best-practices/SKILL.md",
+      "skillFolderHash": "a203aee7243640ceb56ce2c6c4ab286573df5e69",
+      "installedAt": "2026-04-06T04:23:43.000Z",
+      "updatedAt": "2026-04-06T04:23:43.000Z"
     }
   },
   "dismissed": {
