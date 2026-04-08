@@ -91,10 +91,12 @@
   v               文字単位の選択
   V               行単位の選択
   Ctrl+v          矩形選択 (ブロック)
+  Ctrl+q          矩形選択 (Ctrl+v 代替: Windows Terminal などで貼付に
+                  奪われる場合に使う)
   gv              直前の選択を再現
   o               選択の反対側へカーソル移動
 
-[ 矩形選択での編集 (Ctrl+v で範囲指定後) ]
+[ 矩形選択での編集 (Ctrl+v または Ctrl+q で範囲指定後) ]
   I {text} <Esc>  選択した全行の先頭に {text} を挿入
   A {text} <Esc>  選択した全行の末尾に {text} を追記
   c {text} <Esc>  選択した矩形を {text} で置換
