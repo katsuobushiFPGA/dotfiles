@@ -99,6 +99,25 @@
       "skillFolderHash": "a203aee7243640ceb56ce2c6c4ab286573df5e69",
       "installedAt": "2026-04-06T04:23:43.000Z",
       "updatedAt": "2026-04-06T04:23:43.000Z"
+    },
+    "nextjs-app-router-patterns": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/wshobson/agents.git",
+      "skillPath": "plugins/frontend-mobile-development/skills/nextjs-app-router-patterns/SKILL.md",
+      "skillFolderHash": "9756cecd3eac4e42a2f09e92859b955b1166b450",
+      "installedAt": "2026-04-09T20:08:37.763Z",
+      "updatedAt": "2026-04-09T20:08:37.763Z"
+    },
+    "clerk-nextjs-patterns": {
+      "source": "clerk/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/clerk/skills.git",
+      "skillPath": "skills/frameworks/clerk-nextjs-patterns/SKILL.md",
+      "skillFolderHash": "84868d5e56feed42269dd4e3017a694074c6ade8",
+      "pluginName": "frameworks",
+      "installedAt": "2026-04-09T20:08:42.609Z",
+      "updatedAt": "2026-04-09T20:08:42.609Z"
     }
   },
   "dismissed": {
