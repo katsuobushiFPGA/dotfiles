@@ -71,3 +71,9 @@ git 差分を GitHub 風ビューアで確認できる CLI。
 **セッション差分の仕組み：**  
 `mark-file-changed.sh`（PostToolUse）が初回ツール使用時に `INITIAL_HEAD` をキャッシュに記録し、  
 コミット・セッション終了時に `INITIAL_HEAD..CURRENT_HEAD` の範囲で difit を起動する。
+
+---
+
+## Agent Teams
+
+Agent Teams（`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`）を使う場合、tmux セッション内であれば split panes を優先して使うこと。
