@@ -10,6 +10,29 @@ return {
     },
   },
 
+  -- Blade テンプレートのシンタックスハイライト（Laravel）
+  {
+    "EmranMR/tree-sitter-blade",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    ft = "blade",
+    config = function()
+      local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+      parser_config.blade = {
+        install_info = {
+          url = "https://github.com/EmranMR/tree-sitter-blade",
+          files = { "src/parser.c" },
+          branch = "main",
+        },
+        filetype = "blade",
+      }
+      vim.filetype.add({
+        pattern = {
+          [".*%.blade%.php"] = "blade",
+        },
+      })
+    end,
+  },
+
   -- JSX/HTML タグの自動クローズ・ペアリネーム
   {
     "windwp/nvim-ts-autotag",

@@ -13,10 +13,38 @@ return {
     dependencies = { "williamboman/mason.nvim" },
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = { "intelephense", "ts_ls", "eslint" },
+        ensure_installed = {
+          "intelephense",
+          "eslint",
+          "tailwindcss",
+          "cssls",
+          "html",
+          "jsonls",
+        },
         automatic_installation = true,
       })
     end,
+  },
+
+  -- TypeScript LSP（ts_ls より高速・高機能）
+  {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+    opts = {
+      settings = {
+        expose_as_code_action = "all",
+        tsserver_file_preferences = {
+          includeInlayParameterNameHints = "all",
+          includeInlayFunctionLikeReturnTypeHints = true,
+        },
+      },
+    },
+    keys = {
+      { "<leader>ti", "<cmd>TSToolsAddMissingImports<cr>",    desc = "import を追加" },
+      { "<leader>to", "<cmd>TSToolsOrganizeImports<cr>",      desc = "import を整理" },
+      { "<leader>tu", "<cmd>TSToolsRemoveUnusedImports<cr>",  desc = "未使用 import を削除" },
+    },
   },
 
   -- LSP 設定
@@ -28,11 +56,12 @@ return {
     },
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local servers = { "intelephense", "eslint", "tailwindcss", "cssls", "html", "jsonls" }
 
-      vim.lsp.config("intelephense", { capabilities = capabilities })
-      vim.lsp.config("ts_ls",        { capabilities = capabilities })
-      vim.lsp.config("eslint",       { capabilities = capabilities })
-      vim.lsp.enable({ "intelephense", "ts_ls", "eslint" })
+      for _, server in ipairs(servers) do
+        vim.lsp.config(server, { capabilities = capabilities })
+      end
+      vim.lsp.enable(servers)
 
       -- LSP キーマップ
       vim.keymap.set("n", "gd",          vim.lsp.buf.definition,    { desc = "定義へ移動" })
@@ -54,10 +83,12 @@ return {
       "L3MON4D3/LuaSnip",
       "saadparwaiz1/cmp_luasnip",
       "rafamadriz/friendly-snippets",
+      "onsails/lspkind.nvim",
     },
     config = function()
       local cmp     = require("cmp")
       local luasnip = require("luasnip")
+      local lspkind = require("lspkind")
       require("luasnip.loaders.from_vscode").lazy_load()
 
       cmp.setup({
@@ -77,6 +108,13 @@ return {
           { name = "nvim_lsp" },
           { name = "luasnip" },
         }),
+        formatting = {
+          format = lspkind.cmp_format({
+            mode = "symbol_text",
+            maxwidth = 50,
+            ellipsis_char = "...",
+          }),
+        },
       })
     end,
   },
@@ -89,6 +127,7 @@ return {
       require("conform").setup({
         formatters_by_ft = {
           php             = { "pint" },
+          blade           = { "blade-formatter" },
           javascript      = { "prettier" },
           typescript      = { "prettier" },
           typescriptreact = { "prettier" },
