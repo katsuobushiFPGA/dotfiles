@@ -9,6 +9,8 @@ COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
 [[ "$COMMAND" == *"git commit"* ]] || exit 0
 
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // empty')
+CWD=$(echo "$INPUT" | jq -r '.cwd // empty')
+[[ -n "$CWD" ]] && cd "$CWD" 2>/dev/null
 DIFF_ARGS=$(session_diff_args "$SESSION_ID")
 
 if [[ -n "$DIFF_ARGS" ]]; then

@@ -6,8 +6,10 @@ source ~/.claude/hooks/session-lib.sh
 INPUT=$(cat)
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // empty')
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty')
+CWD=$(echo "$INPUT" | jq -r '.cwd // empty')
 
 [[ -z "$SESSION_ID" ]] && exit 0
+[[ -n "$CWD" ]] && cd "$CWD" 2>/dev/null
 
 case "$TOOL_NAME" in
   Write|Edit|NotebookEdit|Bash)
