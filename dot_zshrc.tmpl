@@ -164,6 +164,16 @@ eval "$(fzf --zsh)"
 # zoxide (z コマンドで頻繁に使うディレクトリにジャンプ)
 eval "$(zoxide init zsh)"
 
+# cmux チートシート（新しいワークスペースの最初のシェルで1回だけ表示）
+if [[ -n "$CMUX_WORKSPACE_ID" ]]; then
+  _cmux_cs_flag="/tmp/cmux_cs_shown_${CMUX_WORKSPACE_ID}"
+  if [[ ! -f "$_cmux_cs_flag" ]]; then
+    touch "$_cmux_cs_flag"
+    [[ -f "$HOME/.config/cmux/cheatsheet.txt" ]] && cat "$HOME/.config/cmux/cheatsheet.txt"
+  fi
+  unset _cmux_cs_flag
+fi
+
 # エイリアス
 alias ls='eza --icons'
 alias ll='eza --icons -l'

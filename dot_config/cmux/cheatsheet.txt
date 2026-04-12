@@ -1,0 +1,43 @@
+============================================================
+  cmux チートシート
+============================================================
+
+[ キーボードショートカット ]
+  ⌘N              新しいワークスペース
+  ⌘T              新しいタブ（サーフェス）
+  ⌘P              ワークスペースに移動
+  ⌘D              右に分割
+  ⌘⇧D             下に分割
+  ⌘⇧P             コマンドパレット
+  ⌘⇧R             ワークスペース名変更
+  ⌘⇧L             ブラウザペインを追加
+  ⌘⇧U             未読の最新へジャンプ
+
+[ CLI コマンド ]
+  cmux <path>              ディレクトリをワークスペースで開く
+  cmux new-workspace       新しいワークスペースを作成
+  cmux new-split <方向>    ペインを分割 (left/right/up/down)
+  cmux list-workspaces     ワークスペース一覧
+  cmux list-panes          ペイン一覧
+  cmux focus-pane          ペインにフォーカス
+  cmux tree                ウィンドウ/ワークスペース/ペイン構造を表示
+
+[ Claude Code 連携 ]
+  cmux claude-teams        Agent Teams を起動
+  cmux new-split right     右ペインでサブエージェントを起動
+
+[ ブラウザ ]
+  cmux browser open <url>       ブラウザペインを開く
+  cmux browser snapshot         ページのスナップショットを取得
+  cmux browser screenshot       スクリーンショットを保存
+
+[ Markdown ]
+  cmux markdown open <path>     Markdown をビューアで表示（ライブリロード）
+
+[ その他 ]
+  cmux welcome             このチートシートを再表示
+  cmux shortcuts           キーボードショートカット設定を開く
+  cmux reload-config       設定をリロード
+  cmux --help              全コマンド一覧
+
+============================================================

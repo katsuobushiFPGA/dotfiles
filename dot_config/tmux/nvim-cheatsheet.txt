@@ -75,7 +75,23 @@
   K               ドキュメント表示
   <leader>rn      リネーム
   <leader>ca      コードアクション
+  <leader>e       エラー詳細をフロート表示
   [d / ]d         前/次のエラーへ
+
+[ TypeScript Tools ]
+  <leader>ti      不足 import を自動追加
+  <leader>to      import を整理 (ソート・重複削除)
+  <leader>tu      未使用 import を削除
+
+[ 補完 (CMP) ]
+  <C-k>           補完メニューを手動トリガー
+  <Tab> / <S-Tab> 候補を次 / 前へ
+  <CR>            候補を確定
+  <C-e>           補完を中断
+
+[ 診断パネル (Trouble) ]
+  <leader>xx      Diagnostics パネル（全体）
+  <leader>xd      Diagnostics パネル（現バッファ）
 
 [ Git ]
   ]g / [g         次/前の変更箇所へ
