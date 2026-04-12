@@ -48,6 +48,17 @@ return {
     },
   },
 
+  -- 診断・参照一覧パネル
+  {
+    "folke/trouble.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {},
+    keys = {
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",              desc = "Diagnostics（全体）" },
+      { "<leader>xd", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Diagnostics（バッファ）" },
+    },
+  },
+
   -- ステータスライン
   {
     "nvim-lualine/lualine.nvim",

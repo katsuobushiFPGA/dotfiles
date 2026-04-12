@@ -20,6 +20,7 @@ return {
           "cssls",
           "html",
           "jsonls",
+          "emmet_language_server",
         },
         automatic_installation = true,
       })
@@ -56,7 +57,7 @@ return {
     },
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
-      local servers = { "intelephense", "eslint", "tailwindcss", "cssls", "html", "jsonls" }
+      local servers = { "intelephense", "eslint", "tailwindcss", "cssls", "html", "jsonls", "emmet_language_server" }
 
       for _, server in ipairs(servers) do
         vim.lsp.config(server, { capabilities = capabilities })
@@ -80,6 +81,8 @@ return {
     "hrsh7th/nvim-cmp",
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-buffer",
       "L3MON4D3/LuaSnip",
       "saadparwaiz1/cmp_luasnip",
       "rafamadriz/friendly-snippets",
@@ -107,6 +110,8 @@ return {
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "luasnip" },
+          { name = "path" },
+          { name = "buffer", keyword_length = 3 },
         }),
         formatting = {
           format = lspkind.cmp_format({
