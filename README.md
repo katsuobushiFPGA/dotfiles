@@ -51,6 +51,39 @@ Powerlevel10k のプロンプトを設定する：
 p10k configure
 ```
 
+## 更新
+
+dotfiles や各ツールを最新化するときは `mise run update` を使う。
+
+```bash
+mise run update
+```
+
+以下を順番に実行する：
+
+1. `git pull` — dotfiles リポジトリを最新化
+2. `chezmoi apply` — 設定ファイルをホームディレクトリに反映
+3. `mise upgrade` — mise 管理ツールを一括アップグレード
+4. `npx skills experimental_install` — Claude スキルを再インストール
+
+### dotfiles だけ反映したい場合
+
+ツールのアップグレードは不要で、設定ファイルだけ反映したいときは：
+
+```bash
+git pull
+chezmoi apply
+```
+
+## タスクランナー（mise tasks）
+
+mise の task 機能でよく使う操作をまとめている。
+
+| コマンド | 内容 |
+|---|---|
+| `mise run init` | 初回セットアップ（bootstrap.sh を実行） |
+| `mise run update` | dotfiles・ツール一括アップデート |
+
 ## 管理対象のファイル
 
 | dotfilesのパス | 展開先 |
