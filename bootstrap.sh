@@ -56,10 +56,6 @@ else
   fi
 fi
 
-# install difit
-if ! ~/.local/bin/mise exec -- command -v difit &>/dev/null; then
-  ~/.local/bin/mise exec -- npm install -g difit
-fi
 
 # install powerlevel10k
 if [[ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]]; then
