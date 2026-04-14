@@ -47,6 +47,21 @@ fi
 if [[ "$(uname)" == "Darwin" ]]; then
   brew bundle --file="$(cd "$(dirname "$0")" && pwd)/dot_config/homebrew/Brewfile"
 else
+  # install docker on Linux/WSL2
+  if ! command -v docker &>/dev/null; then
+    sudo apt-get install -y ca-certificates curl
+    sudo install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    sudo chmod a+r /etc/apt/keyrings/docker.gpg
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+      $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    sudo usermod -aG docker "$USER"
+  fi
+
   # install neovim on Linux
   if ! command -v nvim &>/dev/null; then
     ARCH=$(uname -m)
