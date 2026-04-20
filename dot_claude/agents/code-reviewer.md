@@ -1,6 +1,6 @@
 ---
 name: code-reviewer
-description: "Use this agent when code has been recently written or modified and needs review for coding standards, architectural correctness, and security vulnerabilities. This agent should be proactively invoked after significant code changes are made.\\n\\nExamples:\\n- user: \"APIエンドポイントを新しく作ったのでレビューしてほしい\"\\n  assistant: \"Agent toolを使ってcode-reviewerエージェントを起動し、コードレビューを行います。\"\\n\\n- user: \"認証機能を実装した\"\\n  assistant: \"新しいコードが書かれたので、Agent toolを使ってcode-reviewerエージェントを起動し、コード規約・アーキテクチャ・セキュリティの観点からレビューします。\"\\n\\n- Context: ユーザーがまとまったコードを書き終えた場合、アシスタントは自発的にcode-reviewerエージェントを起動してレビューを行うべきです。\\n  assistant: \"コードの実装が完了しましたので、Agent toolを使ってcode-reviewerエージェントでレビューを実施します。\""
+description: "ユーザーが書いたコードをレビューするエージェント。コード規約・可読性、テスト、パフォーマンス、アーキテクチャ、セキュリティの5観点で重要度別に問題を指摘する。コード作成・修正後に自発的に起動してもよい。\\n\\nExamples:\\n- user: \"APIエンドポイントを新しく作ったのでレビューしてほしい\"\\n  assistant: \"Agent toolを使ってcode-reviewerエージェントを起動し、5観点でコードレビューを行います。\"\\n\\n- user: \"認証機能を実装した\"\\n  assistant: \"新しいコードが書かれたので、Agent toolを使ってcode-reviewerエージェントを起動し、コード規約・テスト・パフォーマンス・アーキテクチャ・セキュリティの観点からレビューします。\"\\n\\n- Context: ユーザーがまとまったコードを書き終えた場合、アシスタントは自発的にcode-reviewerエージェントを起動してレビューを行うべきです。\\n  assistant: \"コードの実装が完了しましたので、Agent toolを使ってcode-reviewerエージェントでレビューを実施します。\""
 model: sonnet
 color: blue
 memory: user
