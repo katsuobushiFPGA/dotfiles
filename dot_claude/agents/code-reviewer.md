@@ -30,7 +30,7 @@ const d = new Date();
 const u = users.filter(x => x.a > 18);
 ```
 
-**指摘:** 変数名が1文字で意図が不明。`d` → `now`、`u` → `adultUsers`、`x` → `user`、`x.a` → `user.age` のように意図を表す名前にする。
+**指摘:** 🟡 変数名が1文字で意図が不明。`d` → `now`、`u` → `adultUsers`、`x` → `user`、`x.a` → `user.age` のように意図を表す名前にする。
 </example>
 
 <example type="マジックナンバー">
@@ -40,7 +40,7 @@ if (retryCount > 3) throw new Error("max retries");
 setTimeout(fn, 5000);
 ```
 
-**指摘:** `3` と `5000` の意図が不明。定数に切り出す。
+**指摘:** 🟡 `3` と `5000` の意図が不明。定数に切り出す。
 
 **After:**
 ```ts
@@ -65,7 +65,7 @@ function process(users) {
 }
 ```
 
-**指摘:** ネストが深すぎる。early return でフラット化する。
+**指摘:** 🟡 ネストが深すぎる。early return でフラット化する。
 
 **After:**
 ```ts
@@ -83,7 +83,7 @@ function process(users) {
 <example type="DRY違反">
 **Before:** 同じバリデーションロジック（email 形式チェック）が3箇所にコピペされている。
 
-**指摘:** `validateEmail(email: string): boolean` として抽出し、各所から呼び出す。
+**指摘:** 🟡 `validateEmail(email: string): boolean` として抽出し、各所から呼び出す。
 </example>
 
 ### 2. アーキテクチャの正しさ
@@ -116,13 +116,13 @@ class UserController {
 }
 ```
 
-**指摘:** Controller に バリデーション・永続化・メール送信・ロギングが全部詰まっている。`UserService`（ビジネスロジック）、`UserRepository`（永続化）、`NotificationService`（通知）に分離すべき。
+**指摘:** 🟡 Controller に バリデーション・永続化・メール送信・ロギングが全部詰まっている。`UserService`（ビジネスロジック）、`UserRepository`（永続化）、`NotificationService`（通知）に分離すべき。
 </example>
 
 <example type="依存方向">
 **Before:** Domain 層の `User` モデルが、Infrastructure 層の `UserRepository` を import している。
 
-**指摘:** 依存方向が逆転している（上位→下位 であるべき）。Domain 層にはリポジトリのインターフェースを定義し、Infrastructure 層で実装する（依存性逆転の原則）。
+**指摘:** 🟡 依存方向が逆転している（上位→下位 であるべき）。Domain 層にはリポジトリのインターフェースを定義し、Infrastructure 層で実装する（依存性逆転の原則）。
 </example>
 
 <example type="テスタビリティ">
@@ -135,7 +135,7 @@ function calculateDiscount(userId: string) {
 }
 ```
 
-**指摘:** DB と時刻取得がハードコードされていて単体テスト困難。引数で注入するか、依存をコンストラクタで受け取る設計にする。
+**指摘:** 🟡 DB と時刻取得がハードコードされていて単体テスト困難。引数で注入するか、依存をコンストラクタで受け取る設計にする。
 </example>
 
 ### 3. テスト
@@ -163,7 +163,7 @@ test("returns first element", () => {
 });
 ```
 
-**指摘:** 正常系のみで空配列・null入力のケースが無い。`firstOrNull([])` と `firstOrNull(null)` のケースを追加する。
+**指摘:** 🟡 正常系のみで空配列・null入力のケースが無い。`firstOrNull([])` と `firstOrNull(null)` のケースを追加する。
 </example>
 
 <example type="フレーク要因">
@@ -235,7 +235,7 @@ app.get("/files/:name", (req, res) => {
 logger.info(`Login attempt: ${JSON.stringify(req.body)}`);
 ```
 
-**指摘:** `req.body` にパスワードやトークンが含まれる場合、平文でログに残る。機密フィールドをマスクするシリアライザを使う。
+**指摘:** 🔴 `req.body` にパスワードやトークンが含まれる場合、平文でログに残る。機密フィールドをマスクするシリアライザを使う。
 </example>
 
 <example type="安全でないハッシュ">
@@ -284,7 +284,7 @@ const allUsers = await db.users.findAll(); // 100万件
 const count = allUsers.filter(u => u.active).length;
 ```
 
-**指摘:** カウント目的で全件をメモリに載せている。DB 側で集約する。
+**指摘:** 🟡 カウント目的で全件をメモリに載せている。DB 側で集約する。
 
 **After:**
 ```ts
@@ -300,7 +300,7 @@ const orders = await fetchOrders(id);
 const prefs = await fetchPreferences(id);
 ```
 
-**指摘:** 3つの独立した API 呼び出しを直列実行。`Promise.all` で並行化できる。
+**指摘:** 🟡 3つの独立した API 呼び出しを直列実行。`Promise.all` で並行化できる。
 
 **After:**
 ```ts
