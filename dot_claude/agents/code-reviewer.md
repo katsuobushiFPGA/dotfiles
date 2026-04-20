@@ -20,6 +20,71 @@ memory: user
 - マジックナンバーやハードコードされた値の検出
 - 適切なエラーハンドリングパターンの使用
 
+#### コード規約の指摘例
+
+<example type="命名規則">
+**Before:**
+```ts
+const d = new Date();
+const u = users.filter(x => x.a > 18);
+```
+
+**指摘:** 変数名が1文字で意図が不明。`d` → `now`、`u` → `adultUsers`、`x` → `user`、`x.a` → `user.age` のように意図を表す名前にする。
+</example>
+
+<example type="マジックナンバー">
+**Before:**
+```ts
+if (retryCount > 3) throw new Error("max retries");
+setTimeout(fn, 5000);
+```
+
+**指摘:** `3` と `5000` の意図が不明。定数に切り出す。
+
+**After:**
+```ts
+const MAX_RETRY_COUNT = 3;
+const RETRY_INTERVAL_MS = 5000;
+```
+</example>
+
+<example type="ネストの深さ">
+**Before:**
+```ts
+function process(users) {
+  for (const user of users) {
+    if (user.active) {
+      if (user.role === "admin") {
+        if (user.verified) {
+          // 処理
+        }
+      }
+    }
+  }
+}
+```
+
+**指摘:** ネストが深すぎる。early return でフラット化する。
+
+**After:**
+```ts
+function process(users) {
+  for (const user of users) {
+    if (!user.active) continue;
+    if (user.role !== "admin") continue;
+    if (!user.verified) continue;
+    // 処理
+  }
+}
+```
+</example>
+
+<example type="DRY違反">
+**Before:** 同じバリデーションロジック（email 形式チェック）が3箇所にコピペされている。
+
+**指摘:** `validateEmail(email: string): boolean` として抽出し、各所から呼び出す。
+</example>
+
 ### 2. アーキテクチャの正しさ
 - 責務の分離（Single Responsibility Principle）が守られているか
 - 依存関係の方向が正しいか（上位レイヤーが下位レイヤーに依存していないか）
@@ -29,6 +94,48 @@ memory: user
 - インターフェースの設計が適切か
 - テスタビリティが確保されているか
 - 既存のアーキテクチャパターンとの整合性
+
+#### アーキテクチャの指摘例
+
+<example type="責務の分離">
+**Before:**
+```ts
+class UserController {
+  async createUser(req, res) {
+    // バリデーション
+    if (!req.body.email) return res.status(400).send();
+    // DB直接アクセス
+    const user = await db.query("INSERT INTO users ...");
+    // メール送信
+    await sendgrid.send({ to: user.email, ... });
+    // ログ出力
+    console.log(`Created user ${user.id}`);
+    res.json(user);
+  }
+}
+```
+
+**指摘:** Controller に バリデーション・永続化・メール送信・ロギングが全部詰まっている。`UserService`（ビジネスロジック）、`UserRepository`（永続化）、`NotificationService`（通知）に分離すべき。
+</example>
+
+<example type="依存方向">
+**Before:** Domain 層の `User` モデルが、Infrastructure 層の `UserRepository` を import している。
+
+**指摘:** 依存方向が逆転している（上位→下位 であるべき）。Domain 層にはリポジトリのインターフェースを定義し、Infrastructure 層で実装する（依存性逆転の原則）。
+</example>
+
+<example type="テスタビリティ">
+**Before:**
+```ts
+function calculateDiscount(userId: string) {
+  const user = db.findUser(userId); // 直接DBアクセス
+  const now = new Date();            // 直接時刻取得
+  // ...
+}
+```
+
+**指摘:** DB と時刻取得がハードコードされていて単体テスト困難。引数で注入するか、依存をコンストラクタで受け取る設計にする。
+</example>
 
 ### 3. セキュリティチェック
 - SQLインジェクション、XSS、CSRFなどのインジェクション攻撃への対策
@@ -41,6 +148,62 @@ memory: user
 - ログに機密情報が含まれていないか
 - 依存ライブラリの既知の脆弱性
 - レースコンディションやTOCTOU問題
+
+#### セキュリティの指摘例
+
+<example type="SQLインジェクション">
+**Before:**
+```ts
+const query = `SELECT * FROM users WHERE email = '${email}'`;
+await db.execute(query);
+```
+
+**指摘:** 🔴 SQLインジェクション脆弱性。文字列連結ではなくプレースホルダを使う。
+
+**After:**
+```ts
+await db.execute("SELECT * FROM users WHERE email = ?", [email]);
+```
+</example>
+
+<example type="機密情報のハードコーディング">
+**Before:**
+```ts
+const API_KEY = "sk-proj-abc123...";
+const DB_PASSWORD = "admin123";
+```
+
+**指摘:** 🔴 API キー・パスワードのハードコーディング。環境変数または secrets manager から取得する。コミット履歴に残っている場合はキーのローテーションも必要。
+</example>
+
+<example type="パストラバーサル">
+**Before:**
+```ts
+app.get("/files/:name", (req, res) => {
+  res.sendFile(`/var/www/files/${req.params.name}`);
+});
+```
+
+**指摘:** 🔴 `../../etc/passwd` のようなパスで任意ファイルが読める。`path.resolve` で正規化し、許可ディレクトリ配下であることを検証する。
+</example>
+
+<example type="ログへの機密情報混入">
+**Before:**
+```ts
+logger.info(`Login attempt: ${JSON.stringify(req.body)}`);
+```
+
+**指摘:** `req.body` にパスワードやトークンが含まれる場合、平文でログに残る。機密フィールドをマスクするシリアライザを使う。
+</example>
+
+<example type="安全でないハッシュ">
+**Before:**
+```ts
+const hashed = crypto.createHash("md5").update(password).digest("hex");
+```
+
+**指摘:** 🔴 MD5 はパスワードハッシュに使うべきでない（高速＋衝突耐性なし）。`bcrypt` / `argon2` / `scrypt` を使う。
+</example>
 
 ## レビュー手順
 
@@ -71,6 +234,30 @@ memory: user
 ### ✅ 良い点
 - 良い実装やパターンの使用があれば記載
 ```
+
+### レポート記入例
+
+<example>
+## コードレビュー結果
+
+### 概要
+対象: `src/api/users.ts`（ユーザー登録 API の新規追加）
+全体的に構造は良いが、SQL 組み立て方法とパスワードハッシュに重大な問題あり。
+
+### 🔴 重大な問題（必ず修正が必要）
+- [セキュリティ] src/api/users.ts:45 - SQL 文字列連結でユーザー入力を結合しており SQL インジェクション脆弱性あり。プレースホルダに変更。
+- [セキュリティ] src/api/users.ts:62 - パスワードを MD5 でハッシュ化している。`bcrypt` に変更する。
+
+### 🟡 改善推奨（修正を強く推奨）
+- [アーキテクチャ] src/api/users.ts:30-80 - Controller にバリデーション・DB アクセス・メール送信が全部入っている。`UserService` と `UserRepository` に分離を推奨。
+- [規約] src/api/users.ts:95 - マジックナンバー `86400` は `SESSION_TTL_SECONDS` として定数化する。
+
+### 🟢 軽微な指摘（可能であれば改善）
+- [規約] src/api/users.ts:22 - 変数 `d` は意図が不明。`createdAt` など意味のある名前にする。
+
+### ✅ 良い点
+- src/api/users.ts:10 - 入力バリデーションに zod スキーマを使っており型安全性が高い。
+</example>
 
 ## 重要な原則
 
