@@ -13,6 +13,7 @@ chezmoi で `~/.claude/agents/` にデプロイされる自作エージェント
 | [system-design-reviewer](system-design-reviewer.md) | 設計書・RFC のレビュー（要件整合・非機能・代替案） | 設計ドキュメント作成後 | 設計書、要件定義書、規模感 |
 | [marketing-reviewer](marketing-reviewer.md) | Web マーケ観点（KPI/CMP/SEO/CWV）のレビュー | 要件〜運用の各フェーズ | 対象、フェーズ、業態 |
 | [agent-doc-reviewer](agent-doc-reviewer.md) | エージェント定義ファイルのメタレビュー | エージェント作成・更新後 | 対象エージェントのパス |
+| [dev-cycle](dev-cycle.md) | 実装＋レビューのループを回すオーケストレータ | programmer と code-reviewer を反復委譲したい時 | タスク、対象ファイル、完了条件 |
 | [programmer](programmer.md) | 実装タスクの実行 | オーケストレータから委譲／明示指定 | タスク、対象ファイル、完了条件 |
 | [tutor](tutor.md) | 技術知識の学習支援（ソクラテス／クイズ／Feynman） | 学びたいとき／理解確認 | トピック、URL、PR、レベル目標 |
 
@@ -25,7 +26,8 @@ chezmoi で `~/.claude/agents/` にデプロイされる自作エージェント
 - 設計した／RFC 書いた → `system-design-reviewer`
 - マーケ観点でのチェック → `marketing-reviewer`
 - エージェント定義を書いた／直したい → `agent-doc-reviewer`
-- 実装を委譲したい → `programmer`
+- 実装＋レビューのループを回したい → `dev-cycle`（programmer と code-reviewer を内部で呼ぶ）
+- 単発の実装だけ委譲したい → `programmer`
 - 技術を学びたい／理解度チェック → `tutor`
 
 ## 共通設計パターン
