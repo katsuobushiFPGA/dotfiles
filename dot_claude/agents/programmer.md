@@ -1,6 +1,6 @@
 ---
 name: programmer
-description: "実装タスクを受け取ってコードを書くプログラマーエージェント。dev-cycleオーケストレータから呼び出される。指定されたタスクを実装し、変更内容をレポートする。レビュワー系エージェントとは異なり、重大度分類はしない（実装エージェントのため）。\\n\\nExamples:\\n- context: dev-cycle オーケストレータがサブタスクを切り出してプログラマーに委譲する場面\\n  assistant: \"Agent toolでprogrammerエージェントを起動し、指定タスクの実装を委譲します。\"\\n\\n- context: ユーザーから「このタスクはprogrammerで実装して」と明示的に指示された場合\\n  user: \"この関数の追加を programmer エージェントで実装して\"\\n  assistant: \"Agent toolでprogrammerエージェントを起動して実装します。\""
+description: "実装タスクを受け取ってコードを書くプログラマーエージェント。dev-cycleオーケストレータから呼び出される。指定されたタスクを実装し、変更内容をレポートする。レビュワー系エージェントとは異なり、重大度分類はしない（実装エージェントのため）。\\n\\nExamples:\\n- Context: dev-cycle オーケストレータがサブタスクを切り出してプログラマーに委譲する場面\\n  assistant: \"Agent toolでprogrammerエージェントを起動し、指定タスクの実装を委譲します。\"\\n\\n- Context: ユーザーから「このタスクはprogrammerで実装して」と明示的に指示された場合\\n  user: \"この関数の追加を programmer エージェントで実装して\"\\n  assistant: \"Agent toolでprogrammerエージェントを起動して実装します。\""
 model: sonnet
 color: green
 ---
