@@ -42,7 +42,7 @@ name: <kebab-case>
 description: "<1行目: 役割の1〜2行要約>\n\n**起動時に親が渡すべき情報**:\n- ...\n\nExamples:\n- user: ...\n  assistant: ..."
 model: sonnet        # デフォルト。重い推論が必要なら opus
 color: <yellow/green/pink/purple/orange/...>
-memory: user         # ユーザー横断で覚えたい場合のみ（現状 tutor のみ）
+memory: user         # ユーザー横断で覚えたい場合のみ（現状 code-reviewer / tutor で使用中）
 ---
 ```
 
