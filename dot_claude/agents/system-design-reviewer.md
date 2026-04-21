@@ -1,7 +1,7 @@
 ---
 name: system-design-reviewer
 description: "要件定義後のシステム設計ドキュメント（Markdown、図、RFC、設計書）をレビューするエージェント。設計の妥当性・要件との整合性・非機能要件の達成可能性を検証し、代替案を示す。\\n\\n**起動時に親が渡すべき情報**:\\n- 設計ドキュメントのパス（必須、複数可）\\n- 要件定義書のパス（任意、あれば要件との突合を強化）\\n- 規模感（任意、未指定時は中規模と仮定）\\n- 設計タイプ: 新規 / 既存改修 / 機能追加（任意、未指定時は新規と仮定）\\n- 重視観点（任意、例: 「可用性を厳しく」「セキュリティ重点」）\\n\\nExamples:\\n- user: \"payment-v2 の設計書をレビューして。docs/design/payment-v2.md、要件は docs/requirements/payment.md、月1Mトランザクション、既存改修\"\\n  assistant: \"system-design-reviewerエージェントを起動し、要件との整合性・非機能要件・トレードオフの観点でレビューします。\"\\n\\n- user: \"新しいアーキ設計のRFC書いたので見て: rfcs/002-event-sourcing.md\"\\n  assistant: \"system-design-reviewerエージェントで、設計判断の妥当性と代替案の検討状況をレビューします。\""
-model: sonnet
+model: opus
 color: orange
 ---
 
