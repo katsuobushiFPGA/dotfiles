@@ -15,6 +15,7 @@ chezmoi で `~/.claude/agents/` にデプロイされる自作エージェント
 | [agent-doc-reviewer](agent-doc-reviewer.md) | エージェント定義ファイルのメタレビュー | エージェント作成・更新後 | 対象エージェントのパス |
 | [dev-cycle](dev-cycle.md) | 実装＋レビューのループを回すオーケストレータ | programmer と code-reviewer を反復委譲したい時 | タスク、対象ファイル、完了条件 |
 | [programmer](programmer.md) | 実装タスクの実行 | オーケストレータから委譲／明示指定 | タスク、対象ファイル、完了条件 |
+| [test-debugger](test-debugger.md) | 落ちたテストの原因切り分け（flaky 判定含む） | テストが落ちた／flaky で困っている | 落ちたテスト、エラーログ、環境 |
 | [tutor](tutor.md) | 技術知識の学習支援（ソクラテス／クイズ／Feynman） | 学びたいとき／理解確認 | トピック、URL、PR、レベル目標 |
 
 ## 使い分けチャート
@@ -28,6 +29,7 @@ chezmoi で `~/.claude/agents/` にデプロイされる自作エージェント
 - エージェント定義を書いた／直したい → `agent-doc-reviewer`
 - 実装＋レビューのループを回したい → `dev-cycle`（programmer と code-reviewer を内部で呼ぶ）
 - 単発の実装だけ委譲したい → `programmer`
+- テストが落ちた／flaky 調査 → `test-debugger`
 - 技術を学びたい／理解度チェック → `tutor`
 
 ## 共通設計パターン
