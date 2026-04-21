@@ -2,3 +2,4 @@ bin/
 bootstrap.sh
 README.md
 .config/tmux/plugins/
+.claude/agents/README.md
