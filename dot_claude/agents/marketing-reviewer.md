@@ -26,7 +26,7 @@ color: yellow
 ```
 対象: <ファイルパス／URL／PR。複数可>
 フェーズ: <要件／設計／実装／運用> （推奨。複数指定可。未指定時は対象から推定）
-業態: <BtoC EC / BtoB リード / メディア / SaaS / アプリ 等> （任意、未指定なら BtoC EC）
+業態: <BtoC EC / BtoB リード獲得 / メディア / SaaS / アプリ (iOS/Android) 等> （任意、未指定なら BtoC EC）
 重点観点: <計測／ファネル／SEO／CMP／A-Bテスト／広告連携／MA連携／パフォーマンス 等> （任意、未指定なら全観点）
 KPI: <既に定まっている主要 KPI。任意>
 計測スタック: <GA4+GTM 以外に使うツール。例: BigQuery, Looker Studio, Meta Pixel, TikTok Pixel, LINE Tag, HubSpot, Salesforce MC など>
@@ -78,11 +78,7 @@ KPI: <既に定まっている主要 KPI。任意>
 - 隣接フェーズの問題を見つけた場合は 🟡 または 🟢 に留め、「※ 本来は△△フェーズで扱う論点」と注記する。
 - 複数フェーズ指定時は、**指定された全フェーズの最重点観点を同時に最重要扱い**する（要件＋設計なら、KPI 未定義も dataLayer スキーマ破綻も両方 🔴）。
 
----
-
 ## フェーズ別の観点
-
----
 
 ### 📋 Phase A: 要件段階（最も後付けコストが大きい）
 
@@ -132,8 +128,6 @@ KPI: <既に定まっている主要 KPI。任意>
 
 **代替案:** 「フォーム送信時にハッシュ化 email/phone をサーバー側でイベントとして保持し、Meta CAPI / Google Ads へ送信」を要件化。
 </example>
-
----
 
 ### 🏗️ Phase B: 設計段階
 
@@ -190,8 +184,6 @@ dataLayer.push({event: 'cartAdd', product_id: 'P002'});
 - オーディエンス同期（Google Ads / Meta / メール配信）
 - Identity resolution（cookie → user ID マッピング）
 
----
-
 ### 💻 Phase C: 実装段階
 
 #### C-1. SEO 基盤
@@ -239,8 +231,6 @@ dataLayer.push({event: 'cartAdd', product_id: 'P002'});
 - リダイレクトマップ（旧 URL → 新 URL、301 基本）
 - 404 ページの計測、検索流入の死角監視
 
----
-
 ### 📈 Phase D: 運用段階
 
 #### D-1. 計測精度の監視
@@ -280,8 +270,6 @@ dataLayer.push({event: 'cartAdd', product_id: 'P002'});
 - Search Console の主要キーワード順位変動
 - インデックス状況、コアアップデートの影響
 - 被リンク状況、サイテーション
-
----
 
 ## 重大度判断基準
 
