@@ -1,5 +1,16 @@
+# chezmoi が target path（~/配下）にデプロイしないファイル/ディレクトリ
+# 注意: bare パターン（例: README.md）は root (~) 直下のみマッチし、ネストした
+# 同名ファイルには効かない。ネストしたファイルは個別にパス指定が必要。
+
+# dotfiles リポジトリ自体の README（~/README.md に置きたくない）
+README.md
+
+# chezmoi スクリプト類（ソース管理だけでデプロイ不要）
 bin/
 bootstrap.sh
-README.md
+
+# tmux プラグイン（TPM が管理するので chezmoi でデプロイしない）
 .config/tmux/plugins/
+
+# dot_claude/agents/README.md は Claude Code に agent として誤認されないよう除外
 .claude/agents/README.md
