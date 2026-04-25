@@ -1,4 +1,39 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git commit:*)",
+      "Bash(pnpm run lint:*)",
+      "Bash(pnpm run test:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(rm -r:*)",
+      "Bash(sudo rm:*)",
+      "Bash(rm --recursive:*)",
+      "Bash(rm --force:*)",
+      "Bash(rm -f:*)",
+      "Bash(rm -R:*)",
+      "Bash(find * -delete:*)",
+      "Bash(find * -exec rm:*)",
+      "Bash(xargs rm:*)",
+      "Bash(sudo:*)",
+      "Bash(git reset:*)",
+      "Bash(git rebase:*)",
+      "Bash(git config *)",
+      "Bash(chmod 777 *)",
+      "Read(.env*)",
+      "Read(id_rsa*)",
+      "Read(*.key)",
+      "Read(*.pem)",
+      "Write(.env*)",
+      "Write(id_rsa*)",
+      "Write(*.key)",
+      "Write(*.pem)"
+    ]
+  },
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
