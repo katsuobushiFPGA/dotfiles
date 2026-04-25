@@ -6,7 +6,11 @@
       "Bash(git log:*)",
       "Bash(git commit:*)",
       "Bash(pnpm run lint:*)",
-      "Bash(pnpm run test:*)"
+      "Bash(pnpm run test:*)",
+      "Bash(man *:*)",
+      "Bash(which *:*)",
+      "Bash(*--help:*)",
+      "Bash(*--version:*)"
     ],
     "deny": [
       "Bash(rm -rf:*)",
