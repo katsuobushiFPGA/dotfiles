@@ -2,6 +2,7 @@
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
+  "model": "opus",
   "hooks": {
     "PostToolUse": [
       {
@@ -40,10 +41,19 @@
     "command": "input=$(cat); printf '\\033[01;32m%s@%s\\033[00m:\\033[01;34m%s\\033[00m' \"$(whoami)\" \"$(hostname -s)\" \"$(echo \"$input\" | jq -r '.cwd')\""
   },
   "enabledPlugins": {
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "vercel@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    }
   },
   "language": "Japanese",
-  "effortLevel": "high",
-  "voiceEnabled": true,
-  "advisorModel": "opus"
+  "effortLevel": "xhigh",
+  "advisorModel": "opus",
+  "voiceEnabled": true
 }
