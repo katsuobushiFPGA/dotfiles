@@ -26,7 +26,7 @@ run = "bash ~/dotfiles/bootstrap.sh"
 [tasks.update]
 description = "dotfiles・ツール一括アップデート"
 run = """
-git -C ~/dotfiles pull
+git -C ~/dotfiles pull --ff-only
 chezmoi apply
 mise upgrade
 npx skills experimental_install
