@@ -114,9 +114,10 @@ if ! _font_check; then
   rm /tmp/JetBrainsMono.zip
 fi
 
-# install claude skills
-if command -v jq &>/dev/null; then
-  "$HOME/dotfiles/bin/install-claude-skills"
+# install claude skills（~/.agents/.skill-lock.json を読んで一括復元）
+# cd しないと npx skills が CWD/.agents 配下にインストールしてしまう
+if command -v npx &>/dev/null && [[ -f "$HOME/.agents/.skill-lock.json" ]]; then
+  (cd "$HOME" && npx -y skills experimental_install)
 fi
 
 # register MCP servers for claude code
