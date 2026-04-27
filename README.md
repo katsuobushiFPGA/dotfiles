@@ -132,17 +132,4 @@ mise の task 機能でよく使う操作をまとめている。
 
 ## ツールバージョン（mise管理）
 
-`~/.config/mise/config.toml` で管理：
-
-```toml
-[tools]
-node    = "22"
-go      = "1.22"
-ripgrep = "latest"  # telescope live_grep に必要
-fd      = "latest"  # telescope find_files を高速化
-fzf     = "latest"  # fuzzy history検索（Ctrl+R強化）
-bat     = "latest"  # cat の代替（シンタックスハイライト）
-eza     = "latest"  # ls の代替
-zoxide  = "latest"  # z コマンドでディレクトリジャンプ
-gh      = "latest"  # GitHub CLI
-```
+[`dot_config/mise/config.toml.tmpl`](dot_config/mise/config.toml.tmpl) に集約。追加・更新はこのファイルを直接編集する。
