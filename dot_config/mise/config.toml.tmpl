@@ -29,5 +29,5 @@ run = """
 git -C ~/dotfiles pull --ff-only
 chezmoi apply
 mise upgrade
-npx skills experimental_install
+(cd ~ && npx -y skills experimental_install)
 """
