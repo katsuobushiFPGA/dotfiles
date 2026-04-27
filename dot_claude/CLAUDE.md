@@ -32,9 +32,9 @@ rmdir ~/dotfiles/.agents/skills ~/dotfiles/.agents
 
 ### 新しい環境での再現
 
-`dot_agents/dot_skill-lock.json` を dotfiles の git で管理しており、新しい環境では `bootstrap.sh` が `bin/install-claude-skills` を呼び出して `~/.agents/.skill-lock.json` を読み再インストールする。
+`dot_agents/dot_skill-lock.json` を dotfiles の git で管理しており、新しい環境では `bootstrap.sh` が `npx skills experimental_install` を呼び出して `~/.agents/.skill-lock.json` を読み再インストールする。
 
-`npx skills experimental_install` でも同様に再インストールできる。
+手動で再実行したい場合も同じコマンドでよい（`$HOME` で実行すること。CWD 配下に `.agents/` を作らないため）。
 
 ### 自作スキルを追加する
 
