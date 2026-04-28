@@ -147,7 +147,3 @@ mise の task 機能でよく使う操作をまとめている。
 | 拡張 | リンク |
 |---|---|
 | React Developer Tools | https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi |
-
-## ツールバージョン（mise管理）
-
-[`dot_config/mise/config.toml.tmpl`](dot_config/mise/config.toml.tmpl) に集約。追加・更新はこのファイルを直接編集する。
