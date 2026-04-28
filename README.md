@@ -103,7 +103,7 @@ mise の task 機能でよく使う操作をまとめている。
 | `dot_agents/dot_skill-lock.json` | `~/.agents/.skill-lock.json` |
 | `dot_config/mise/config.toml.tmpl` | `~/.config/mise/config.toml` |
 | `dot_config/nvim/` | `~/.config/nvim/` |
-| `dot_config/tmux/tmux.conf` | `~/.config/tmux/tmux.conf` |
+| `dot_config/tmux/` | `~/.config/tmux/`（tmux.conf／cheatsheet／concepts／nvim-cheatsheet。`plugins/` は除外） |
 | `dot_config/cmux/cheatsheet.txt` | `~/.config/cmux/cheatsheet.txt` |
 | `dot_config/git/ignore` | `~/.config/git/ignore` |
 | `dot_config/homebrew/Brewfile` | `~/.config/homebrew/Brewfile`（Macのみ参照） |
