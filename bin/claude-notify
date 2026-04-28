@@ -1,10 +1,19 @@
 #!/bin/bash
+# Claude の作業完了などをデスクトップ通知として表示する
+# 使い方: claude-notify ["メッセージ"]
+
 MSG="${1:-作業完了}"
 
 if [[ "$(uname -r)" == *microsoft* ]]; then
-  # WSL2
-  powershell.exe -Command "[System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms') | Out-Null; [System.Windows.Forms.MessageBox]::Show('$MSG', 'Claude')"
+  # WSL2: PowerShell のシングルクォート文字列に渡すため ' を '' に二重化
+  ESCAPED=${MSG//\'/\'\'}
+  powershell.exe -Command "[System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms') | Out-Null; [System.Windows.Forms.MessageBox]::Show('$ESCAPED', 'Claude')"
 elif [[ "$(uname)" == "Darwin" ]]; then
-  # Mac
-  osascript -e "display notification \"$MSG\" with title \"Claude\""
+  # Mac: AppleScript のダブルクォート文字列に渡すため \ と " をエスケープ
+  ESCAPED=${MSG//\\/\\\\}
+  ESCAPED=${ESCAPED//\"/\\\"}
+  osascript -e "display notification \"$ESCAPED\" with title \"Claude\""
+elif command -v notify-send &>/dev/null; then
+  # Linux GUI 環境（GNOME/KDE 等）
+  notify-send "Claude" "$MSG"
 fi
