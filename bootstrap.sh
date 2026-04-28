@@ -134,5 +134,5 @@ fi
 
 # install playwright chromium browser
 if command -v npx &>/dev/null; then
-  npx playwright install chromium 2>/dev/null || true
+  npx playwright install chromium || true
 fi
