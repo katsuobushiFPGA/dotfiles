@@ -11,11 +11,14 @@ COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
 [[ "$COMMAND" == *"git commit"* ]] || exit 0
 
 CWD=$(echo "$INPUT" | jq -r '.cwd // empty')
-[[ -n "$CWD" ]] && cd "$CWD" 2>/dev/null
+# CWD が指定されていて cd に失敗した場合は安全に抜ける（フックの cwd は不安定なため）
+if [[ -n "$CWD" ]]; then
+  cd "$CWD" 2>/dev/null || exit 0
+fi
 
-# dotfiles リポジトリ判定（remote URL の末尾が dotfiles）
+# dotfiles リポジトリ判定（remote URL の末尾が /dotfiles。another-dotfiles 等の誤検知を避ける）
 REMOTE=$(git config --get remote.origin.url 2>/dev/null || true)
-[[ "$REMOTE" =~ dotfiles(\.git)?$ ]] || exit 0
+[[ "$REMOTE" =~ /dotfiles(\.git)?$ ]] || exit 0
 
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // empty')
 DIFF_RANGE=$(session_diff_args "$SESSION_ID")
@@ -30,6 +33,8 @@ fi
 [[ -n "$CHANGED" ]] || exit 0
 
 # ドキュメント連動が必要なパターン
+# 注: TRIGGER_RE は dot_claude/CLAUDE.md にもマッチするが、CLAUDE.md だけのコミットは
+# 後段の DOC_RE チェックで早期 return するので警告は出ない。
 TRIGGER_RE='^(dot_|private_|bootstrap\.sh)'
 DOC_RE='^(README\.md|dot_claude/CLAUDE\.md)$'
 
