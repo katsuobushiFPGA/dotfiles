@@ -138,6 +138,23 @@ mise の task 機能でよく使う操作をまとめている。
 | `mark-file-changed.sh` | ツール使用時にセッションフラグとセッション開始 HEAD を記録 |
 | `doc-sync-check.sh` | dotfiles リポジトリで `dot_*` / `bootstrap.sh` をコミットしたのに README/CLAUDE.md が未更新なら警告 |
 
+## Claude Code エージェント
+
+`dot_claude/agents/` に自作エージェント（code-reviewer, doc-reviewer, dev-cycle, programmer, test-debugger, tutor など）を管理している。
+
+一覧・使い分け・追加手順は [`dot_claude/agents/README.md`](dot_claude/agents/README.md) を参照。
+
+## Claude Code スキル
+
+`dot_claude/skills/` に自作スキルを置く。`chezmoi apply` で `~/.claude/skills/` にデプロイされる。
+
+| スキル | 役割 |
+|---|---|
+| `dev-cycle` | programmer ＋ code-reviewer のサイクルを最大3回回す開発フロー |
+| `js-debug` | JS/TS/Next.js のランタイム不具合を Playwright 等で再現・観測して原因特定 |
+
+外部リポジトリからインストールするスキル（`npx skills` 管理）の運用や、自作スキル追加手順は [`dot_claude/CLAUDE.md`](dot_claude/CLAUDE.md) を参照。
+
 ## 手動セットアップ
 
 ### Chrome 拡張
