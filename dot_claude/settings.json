@@ -21,6 +21,10 @@
             "type": "command",
             "command": "~/.claude/hooks/difit-on-commit.sh",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/doc-sync-check.sh"
           }
         ]
       }

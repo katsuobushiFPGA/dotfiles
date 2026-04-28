@@ -135,6 +135,7 @@ mise の task 機能でよく使う操作をまとめている。
 | `difit-on-stop.sh` | セッション終了時、変更があれば差分を difit で表示 |
 | `difit-open.sh` | difit を cmux 内蔵ブラウザ（または WSL フォールバック）で開く共通スクリプト |
 | `mark-file-changed.sh` | ツール使用時にセッションフラグとセッション開始 HEAD を記録 |
+| `doc-sync-check.sh` | dotfiles リポジトリで `dot_*` / `bootstrap.sh` をコミットしたのに README/CLAUDE.md が未更新なら警告 |
 
 ## 手動セットアップ
 
