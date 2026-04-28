@@ -174,11 +174,13 @@ if [[ -n "$CMUX_WORKSPACE_ID" ]]; then
   unset _cmux_cs_flag
 fi
 
-# エイリアス
-alias ls='eza --icons'
-alias ll='eza --icons -l'
-alias la='eza --icons -la'
-alias cat='bat --paging=never'
+# エイリアス（mise 未導入環境では素のコマンドにフォールバックする）
+if command -v eza &>/dev/null; then
+  alias ls='eza --icons'
+  alias ll='eza --icons -l'
+  alias la='eza --icons -la'
+fi
+command -v bat &>/dev/null && alias cat='bat --paging=never'
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/.local/share/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/.local/share/kiro-cli/shell/zshrc.post.zsh"
