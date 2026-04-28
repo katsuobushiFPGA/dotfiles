@@ -1,5 +1,23 @@
 # dotfiles メモ
 
+## ドキュメント整合性ルール
+
+以下のファイルを変更したときは、対応するドキュメントを **同じコミット** に含めて更新する。READMEとコードの乖離は再現性とオンボーディングを壊すので、後回しにしない。
+
+| 変更したもの | 連動して見直すドキュメント |
+|---|---|
+| `dot_config/mise/config.toml.tmpl` のツール追加・削除 | `README.md` のインストール表（個別インストール対象が増減する場合） |
+| chezmoi 管理ファイル（`dot_*` / `private_*`）の追加・移動・削除 | `README.md` の「管理対象のファイル」表 |
+| `bootstrap.sh` の手順変更 | `README.md` のセットアップ手順、必要なら「ツール表」 |
+| `dot_claude/hooks/` のフック追加・削除・役割変更 | `README.md` の「Claude Code フック」表、`dot_claude/CLAUDE.md` の difit セクション |
+| `dot_claude/agents/` `dot_claude/skills/` の追加・削除 | 外部スキルなら `dot_agents/dot_skill-lock.json`、特殊な使い方なら `dot_claude/CLAUDE.md` |
+| `dot_config/homebrew/Brewfile` のパッケージ追加・削除 | `README.md` のインストール表（注目すべきものなら） |
+
+**運用方針**:
+- ファイル編集後にドキュメントを `grep` して言及箇所を確認する。
+- ドキュメント更新を別PR/別コミットに分けない（レビュー時に乖離が見えにくくなるため）。
+- 「ドキュメントに書くほどでもない軽微な変更」と判断したら、その理由をコミットメッセージに残す。
+
 ## スキル管理
 
 ### ファイル構成
