@@ -121,7 +121,7 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
+[[ "$TERM_PROGRAM" == "vscode" ]] && command -v code &>/dev/null && . "$(code --locate-shell-integration-path zsh)"
 
 export DOTNET_ROOT=$HOME/.dotnet
 export PATH=$HOME/.local/bin:$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
@@ -159,10 +159,10 @@ fi
 source "$_mise_cache"
 
 # fzf
-eval "$(fzf --zsh)"
+command -v fzf &>/dev/null && eval "$(fzf --zsh)"
 
 # zoxide (z コマンドで頻繁に使うディレクトリにジャンプ)
-eval "$(zoxide init zsh)"
+command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 
 # cmux チートシート（新しいワークスペースの最初のシェルで1回だけ表示）
 if [[ -n "$CMUX_WORKSPACE_ID" ]]; then
