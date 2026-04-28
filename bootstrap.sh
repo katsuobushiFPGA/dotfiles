@@ -8,7 +8,9 @@ if [[ "$(uname)" == "Darwin" ]]; then
   fi
 else
   # WSL/Linux
-  sudo apt-get update -y && sudo apt-get install -y zsh
+  if ! command -v zsh &>/dev/null; then
+    sudo apt-get update -y && sudo apt-get install -y zsh
+  fi
 fi
 
 # install chezmoi
@@ -33,7 +35,9 @@ fi
 ~/.local/bin/chezmoi apply --source "$(cd "$(dirname "$0")" && pwd)"
 
 # install mise
-curl https://mise.run | sh
+if ! command -v mise &>/dev/null && [[ ! -x "$HOME/.local/bin/mise" ]]; then
+  curl https://mise.run | sh
+fi
 
 # install tools via mise (node, go, etc.)
 ~/.local/bin/mise install
@@ -129,4 +133,6 @@ if command -v claude &>/dev/null; then
 fi
 
 # install playwright chromium browser
-npx playwright install chromium 2>/dev/null || true
+if command -v npx &>/dev/null; then
+  npx playwright install chromium 2>/dev/null || true
+fi
