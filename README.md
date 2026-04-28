@@ -164,3 +164,11 @@ mise の task 機能でよく使う操作をまとめている。
 | 拡張 | リンク |
 |---|---|
 | React Developer Tools | https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi |
+
+## ドキュメント
+
+`docs/` 配下に技術調査メモなどを置いている。
+
+| ファイル | 内容 |
+|---|---|
+| [`docs/apm-evaluation.md`](docs/apm-evaluation.md) | APM（Agent Package Manager）調査メモ |
