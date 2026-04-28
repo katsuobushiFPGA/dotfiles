@@ -17,7 +17,7 @@ cd ~/dotfiles
 bash bootstrap.sh
 ```
 
-以下が自動インストールされる：
+以下が `bootstrap.sh` 内で自動インストールされる：
 
 | ツール | WSL | Mac |
 |---|---|---|
@@ -25,10 +25,17 @@ bash bootstrap.sh
 | chezmoi | ✅ | ✅ |
 | mise | ✅ | ✅ |
 | oh-my-zsh | ✅ | ✅ |
-| Neovim (最新版) | GitHub Releases から取得 | `brew install neovim` |
-| cmux | — | `brew install cmux` |
 | Powerlevel10k | ✅ | ✅ |
-| difit | ✅ | ✅ |
+| zsh-syntax-highlighting | ✅ | ✅ |
+| TPM (tmux plugin manager) | ✅ | ✅ |
+| JetBrainsMono Nerd Font | ✅ | ✅ |
+| Neovim (最新版) | GitHub Releases から取得 | Brewfile (`brew "neovim"`) |
+| Docker | apt でインストール | Brewfile (`cask "docker"`) |
+| Brewfile 経由パッケージ（cmux 等） | — | ✅ |
+| Claude Code MCP（chrome-devtools, playwright） | ✅ | ✅ |
+| Playwright Chromium | ✅ | ✅ |
+
+その他の CLI ツール（ripgrep, fzf, bat, eza, gh, lazygit, difit など）は mise が管理する。詳細は [`dot_config/mise/config.toml.tmpl`](dot_config/mise/config.toml.tmpl) を参照。
 
 ### 3. chezmoiで設定を反映
 
@@ -90,12 +97,21 @@ mise の task 機能でよく使う操作をまとめている。
 |---|---|
 | `dot_zshrc.tmpl` | `~/.zshrc` |
 | `dot_zprofile` | `~/.zprofile` |
-| `dot_config/mise/config.toml` | `~/.config/mise/config.toml` |
+| `dot_gitconfig.tmpl` | `~/.gitconfig` |
+| `dot_oh-my-zsh/custom/` | `~/.oh-my-zsh/custom/` |
+| `dot_agents/dot_skill-lock.json` | `~/.agents/.skill-lock.json` |
+| `dot_config/mise/config.toml.tmpl` | `~/.config/mise/config.toml` |
 | `dot_config/nvim/` | `~/.config/nvim/` |
 | `dot_config/tmux/tmux.conf` | `~/.config/tmux/tmux.conf` |
+| `dot_config/cmux/cheatsheet.txt` | `~/.config/cmux/cheatsheet.txt` |
+| `dot_config/git/ignore` | `~/.config/git/ignore` |
+| `dot_config/homebrew/Brewfile` | `~/.config/homebrew/Brewfile`（Macのみ参照） |
 | `dot_claude/settings.json` | `~/.claude/settings.json` |
-| `dot_claude/hooks/` | `~/.claude/hooks/` |
 | `dot_claude/CLAUDE.md` | `~/.claude/CLAUDE.md` |
+| `dot_claude/hooks/` | `~/.claude/hooks/` |
+| `dot_claude/agents/` | `~/.claude/agents/` |
+| `dot_claude/skills/` | `~/.claude/skills/` |
+| `private_Library/private_Application Support/` | `~/Library/Application Support/`（Macのみ） |
 
 ## OS差分
 
