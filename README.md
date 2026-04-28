@@ -165,6 +165,15 @@ mise の task 機能でよく使う操作をまとめている。
 |---|---|
 | React Developer Tools | https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi |
 
+## ユーティリティスクリプト
+
+`bin/` 配下のスクリプトは chezmoi のデプロイ対象外で、リポジトリのまま使う。`dot_zshrc.tmpl` の WSL ブロックで `$HOME/dotfiles/bin` を PATH に追加しているため、シェルから直接呼べる。
+
+| スクリプト | 用途 |
+|---|---|
+| `bin/claude-notify` | Claude Code の作業完了などを WSL では PowerShell の MessageBox、Mac では通知センターで知らせる小物。`claude-notify "メッセージ"` で呼ぶ |
+| `bin/chezmoi` | bootstrap.sh が初回に取得する chezmoi バイナリ置き場（`.gitignore` 対象） |
+
 ## ドキュメント
 
 `docs/` 配下に技術調査メモなどを置いている。
