@@ -72,6 +72,7 @@ mise run update
 2. `chezmoi apply` — 設定ファイルをホームディレクトリに反映
 3. `mise upgrade` — mise 管理ツールを一括アップグレード
 4. `npx skills experimental_install` — Claude スキルを再インストール
+5. `npx playwright install chromium` — Playwright MCP 用ブラウザを最新化
 
 ### dotfiles だけ反映したい場合
 
