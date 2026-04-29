@@ -164,6 +164,18 @@ command -v fzf &>/dev/null && eval "$(fzf --zsh)"
 # zoxide (z コマンドで頻繁に使うディレクトリにジャンプ)
 command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 
+# ghq + fzf: Ctrl+G で管理下のリポジトリに移動
+if command -v ghq &>/dev/null && command -v fzf &>/dev/null; then
+  function ghq-fzf() {
+    local dir
+    dir=$(ghq list | fzf --preview "ls -la $(ghq root)/{}") || return
+    BUFFER="cd $(ghq root)/${dir}"
+    zle accept-line
+  }
+  zle -N ghq-fzf
+  bindkey '^G' ghq-fzf
+fi
+
 # cmux チートシート（新しいワークスペースの最初のシェルで1回だけ表示）
 if [[ -n "$CMUX_WORKSPACE_ID" ]]; then
   _cmux_cs_flag="/tmp/cmux_cs_shown_${CMUX_WORKSPACE_ID}"
