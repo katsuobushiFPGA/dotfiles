@@ -1,0 +1,10 @@
+name: kbushi
+version: 1.0.0
+description: APM project for kbushi
+author: kbushi
+dependencies:
+  apm:
+  - mizchi/skills/empirical-prompt-tuning
+  mcp: []
+includes: auto
+scripts: {}

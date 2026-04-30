@@ -32,8 +32,9 @@
 | chezmoi 管理ファイル（`dot_*` / `private_*`）の追加・移動・削除 | `README.md` の「管理対象のファイル」表 |
 | `bootstrap.sh` の手順変更 | `README.md` のセットアップ手順、必要なら「ツール表」 |
 | `dot_claude/hooks/` のフック追加・削除・役割変更 | `README.md` の「Claude Code フック」表、`dot_claude/CLAUDE.md` の difit セクション |
-| `dot_claude/agents/` `dot_claude/skills/` の追加・削除 | 外部スキルなら `dot_agents/dot_skill-lock.json`、特殊な使い方なら `dot_claude/CLAUDE.md` |
+| `dot_claude/agents/` `dot_claude/skills/` の追加・削除 | 外部スキルなら `dot_agents/dot_skill-lock.json` か `dot_apm/apm.yml`+`dot_apm/apm.lock.yaml`、特殊な使い方なら `dot_claude/CLAUDE.md` |
 | `dot_config/homebrew/Brewfile` のパッケージ追加・削除 | `README.md` のインストール表（注目すべきものなら） |
+| apm 経由スキルの追加・削除（`apm install -g ...`） | `~/.apm/apm.yml` と `~/.apm/apm.lock.yaml` を `dot_apm/` にコピー、`README.md` の管理対象表は変更不要 |
 
 **運用方針**:
 - ファイル編集後にドキュメントを `grep` して言及箇所を確認する。
@@ -42,16 +43,40 @@
 
 ## スキル管理
 
+外部スキルは 2 系統で管理している。配布元の指定（`npx skills add ...` か `apm install ...`）に従って使い分ける。両方とも最終的には `~/.claude/skills/<name>` に配置されるが、実体の置き場と再インストール手段が異なる。
+
 ### ファイル構成
+
+#### 共通
 
 | パス | 役割 |
 |---|---|
-| `~/.agents/.skill-lock.json` | `npx skills` のロックファイル（`dot_agents/dot_skill-lock.json` から chezmoi でデプロイ） |
-| `~/.agents/skills/<name>/` | スキルの実体（外部リポジトリからインストール） |
-| `~/.claude/skills/<name>` | `../../.agents/skills/<name>` へのシンボリックリンク |
+| `~/.claude/skills/<name>` | Claude Code が読むスキル本体。`npx skills` 系はシンボリックリンク、apm 系は実体ディレクトリ、自作は単一 `.md` |
 | `dotfiles/dot_claude/skills/<name>.md` | 自作スキル（chezmoi で `~/.claude/skills/` に直接デプロイ） |
 
+#### `npx skills` 系（mattpocock/skills, vercel-labs/skills など）
+
+| パス | 役割 |
+|---|---|
+| `~/.agents/.skill-lock.json` | ロックファイル（`dot_agents/dot_skill-lock.json` から chezmoi でデプロイ） |
+| `~/.agents/skills/<name>/` | スキルの実体 |
+| `~/.claude/skills/<name>` | `../../.agents/skills/<name>` へのシンボリックリンク |
+
+#### apm 系（mizchi/skills など、apm 配布が推奨されているもの）
+
+| パス | 役割 |
+|---|---|
+| `~/.apm/apm.yml` | マニフェスト（`dot_apm/apm.yml` から chezmoi でデプロイ） |
+| `~/.apm/apm.lock.yaml` | ロックファイル（`dot_apm/apm.lock.yaml` から chezmoi でデプロイ） |
+| `~/.apm/apm_modules/<owner>/<repo>/` | スキルの実体（apm のキャッシュ。chezmoi では管理しない） |
+| `~/.claude/skills/<name>` | apm がデプロイしたスキルの実体ディレクトリ |
+| `~/.config/opencode/skills/<name>`, `~/.copilot/skills/<name>`, `~/.gemini/skills/<name>` | apm が他 AI ツール向けにも自動配置（`includes: auto` の挙動）。Claude Code からは参照しないが配置はされる |
+
+> **同名スキルを `npx skills` 系と apm 系の両方で管理しない**。`~/.claude/skills/<name>` の上書き順序は bootstrap.sh の実行順（npx skills → apm）に依存し、症状が分かりにくいため、どちらか一方に統一する。
+
 ### 外部リポジトリからスキルを追加する
+
+#### `npx skills` の場合
 
 ```bash
 # ~/.agents/ 配下から実行すること（カレントディレクトリに .agents/ が作られる）
@@ -70,11 +95,35 @@ rmdir ~/dotfiles/.agents/skills ~/dotfiles/.agents
 
 シンボリックリンクが作られなかった場合も同様に手動で作成する。
 
+#### apm の場合
+
+```bash
+# ~/ から実行すること（apm が CWD を project root として扱うため）
+cd ~
+apm install -g <owner>/<repo>/<skill-name>
+# 例: apm install -g mizchi/skills/empirical-prompt-tuning
+```
+
+インストール後に `~/.apm/apm.yml` と `~/.apm/apm.lock.yaml` が更新される。dotfiles 側に反映するには：
+
+```bash
+cp ~/.apm/apm.yml ~/dotfiles/dot_apm/apm.yml
+cp ~/.apm/apm.lock.yaml ~/dotfiles/dot_apm/apm.lock.yaml
+
+# resolved_commit が変わっているか確認（generated_at だけの差分はコミット不要）
+git -C ~/dotfiles diff dot_apm/apm.lock.yaml
+```
+
+`apm.yml` には `name`, `version`, `author` などのプロジェクトメタが含まれるが、`-g`（user scope）専用なので個人情報として割り切ってコミットする。`apm.lock.yaml` の `generated_at` はインストール時刻が入るため、依存に変更がないときはタイムスタンプ差分しか出ない（=コミット不要）。
+
 ### 新しい環境での再現
 
-`dot_agents/dot_skill-lock.json` を dotfiles の git で管理しており、新しい環境では `bootstrap.sh` が `npx skills experimental_install` を呼び出して `~/.agents/.skill-lock.json` を読み再インストールする。
+bootstrap.sh が両方の系統を自動で復元する：
 
-手動で再実行したい場合も同じコマンドでよい（`$HOME` で実行すること。CWD 配下に `.agents/` を作らないため）。
+- `~/.agents/.skill-lock.json` があれば `npx skills experimental_install`
+- `~/.apm/apm.yml` があれば `apm install -g`
+
+手動で再実行する場合も同じコマンド（必ず `$HOME` で実行する。`apm` も `npx skills` も CWD 配下に作業ディレクトリを作るため）。
 
 ### 自作スキルを追加する
 

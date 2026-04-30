@@ -30,6 +30,7 @@ bash bootstrap.sh
 | TPM (tmux plugin manager) | ✅ | ✅ |
 | JetBrainsMono Nerd Font | ✅ | ✅ |
 | Neovim (最新版) | GitHub Releases から取得 | Brewfile (`brew "neovim"`) |
+| apm (Agent Package Manager) | GitHub Releases から `~/.local/bin/apm` に展開 | Brewfile (`brew "microsoft/apm/apm"`) |
 | Docker | apt でインストール | Brewfile (`cask "docker"`) |
 | Brewfile 経由パッケージ（cmux 等） | — | ✅ |
 | Claude Code MCP（chrome-devtools, playwright） | ✅ | ✅ |
@@ -71,8 +72,9 @@ mise run update
 1. `git pull` — dotfiles リポジトリを最新化
 2. `chezmoi apply` — 設定ファイルをホームディレクトリに反映
 3. `mise upgrade` — mise 管理ツールを一括アップグレード
-4. `npx skills experimental_install` — Claude スキルを再インストール
-5. `npx playwright install chromium` — Playwright MCP 用ブラウザを最新化
+4. `npx skills experimental_install` — `npx skills` 管理のスキルを再インストール
+5. `~/.local/bin/apm install -g` — apm 管理のスキルを再インストール（WSL では Atom 製 `apm` との衝突を避けるためフルパス推奨。Mac は `apm install -g` で OK）
+6. `npx playwright install chromium` — Playwright MCP 用ブラウザを最新化
 
 ### dotfiles だけ反映したい場合
 
@@ -100,7 +102,9 @@ mise の task 機能でよく使う操作をまとめている。
 | `dot_zprofile` | `~/.zprofile` |
 | `dot_gitconfig.tmpl` | `~/.gitconfig` |
 | `dot_oh-my-zsh/custom/` | `~/.oh-my-zsh/custom/` |
-| `dot_agents/dot_skill-lock.json` | `~/.agents/.skill-lock.json` |
+| `dot_agents/dot_skill-lock.json` | `~/.agents/.skill-lock.json`（`npx skills` 経由のスキル ロック） |
+| `dot_apm/apm.yml` | `~/.apm/apm.yml`（apm のマニフェスト） |
+| `dot_apm/apm.lock.yaml` | `~/.apm/apm.lock.yaml`（apm のロックファイル） |
 | `dot_config/mise/config.toml.tmpl` | `~/.config/mise/config.toml` |
 | `dot_config/nvim/` | `~/.config/nvim/` |
 | `dot_config/tmux/` | `~/.config/tmux/`（tmux.conf／cheatsheet／concepts／nvim-cheatsheet。`plugins/` は除外） |
@@ -153,7 +157,12 @@ mise の task 機能でよく使う操作をまとめている。
 | `dev-cycle` | programmer ＋ code-reviewer のサイクルを最大3回回す開発フロー |
 | `js-debug` | JS/TS/Next.js のランタイム不具合を Playwright 等で再現・観測して原因特定 |
 
-外部リポジトリからインストールするスキル（`npx skills` 管理）の運用や、自作スキル追加手順は [`dot_claude/CLAUDE.md`](dot_claude/CLAUDE.md) を参照。
+外部リポジトリからインストールするスキルは 2 系統で管理している：
+
+- **`npx skills` 系**: `~/.agents/.skill-lock.json`（chezmoi 管理）→ `~/.agents/skills/<name>/` を `~/.claude/skills/<name>` にシンボリックリンク
+- **apm 系**: `~/.apm/apm.yml` + `~/.apm/apm.lock.yaml`（chezmoi 管理）→ `~/.apm/apm_modules/` から `~/.claude/skills/<name>` に直接デプロイ。`mizchi/skills/*` などはこちらで入れる
+
+それぞれの運用と自作スキル追加手順は [`dot_claude/CLAUDE.md`](dot_claude/CLAUDE.md) を参照。
 
 ## 手動セットアップ
 

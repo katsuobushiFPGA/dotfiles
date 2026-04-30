@@ -73,6 +73,25 @@ else
     tar -xzf "nvim-linux-${ARCH}.tar.gz" -C ~/.local/ --strip-components=1
     rm "nvim-linux-${ARCH}.tar.gz"
   fi
+
+  # install apm (Agent Package Manager) on Linux
+  # Mac は Brewfile (microsoft/apm/apm) で入れるためここではスキップ。
+  # PATH 上の `apm` は Atom 製 package manager の可能性があるため、
+  # ~/.local/bin/apm の有無だけで判定する。
+  if [[ ! -x "$HOME/.local/bin/apm" ]]; then
+    # apm のリリース命名に揃える（uname -m の aarch64 は apm では arm64）
+    APM_ARCH=$(uname -m)
+    [[ "$APM_ARCH" == "aarch64" ]] && APM_ARCH="arm64"
+    mkdir -p ~/.local/share/apm ~/.local/bin
+    curl -fsSL "https://github.com/microsoft/apm/releases/latest/download/apm-linux-${APM_ARCH}.tar.gz" \
+      -o /tmp/apm.tar.gz \
+      || { echo "apm download failed for arch=${APM_ARCH}" >&2; exit 1; }
+    tar -xzf /tmp/apm.tar.gz -C ~/.local/share/apm/ --strip-components=1 \
+      || { rm -f /tmp/apm.tar.gz; exit 1; }
+    ln -snf ~/.local/share/apm/apm ~/.local/bin/apm
+    rm -f /tmp/apm.tar.gz
+    unset APM_ARCH
+  fi
 fi
 
 
@@ -123,6 +142,20 @@ fi
 if command -v npx &>/dev/null && [[ -f "$HOME/.agents/.skill-lock.json" ]]; then
   (cd "$HOME" && npx -y skills experimental_install)
 fi
+
+# install claude skills via apm（~/.apm/apm.yml と apm.lock.yaml を読んで一括復元）
+# cd ~ しないと apm がカレントを project root として扱う
+# ~/.local/bin/apm を優先（PATH の `apm` は Atom 製 package manager の可能性があるため）
+_APM_BIN=""
+if [[ -x "$HOME/.local/bin/apm" ]]; then
+  _APM_BIN="$HOME/.local/bin/apm"
+elif command -v apm &>/dev/null; then
+  _APM_BIN=$(command -v apm)
+fi
+if [[ -f "$HOME/.apm/apm.yml" ]] && [[ -n "$_APM_BIN" ]]; then
+  (cd "$HOME" && "$_APM_BIN" install -g)
+fi
+unset _APM_BIN
 
 # register MCP servers for claude code
 if command -v claude &>/dev/null; then
