@@ -43,7 +43,14 @@
 
 ## スキル管理
 
-外部スキルは 2 系統で管理している。配布元の指定（`npx skills add ...` か `apm install ...`）に従って使い分ける。両方とも最終的には `~/.claude/skills/<name>` に配置されるが、実体の置き場と再インストール手段が異なる。
+外部スキルは `npx skills` と apm の 2 系統で管理している。両方とも最終的には `~/.claude/skills/<name>` に配置されるが、実体の置き場と再インストール手段が異なる。
+
+### 新規スキル追加時の選択ルール
+
+- **upstream が apm 配布に対応している場合は apm でインストールする**（マニフェスト + ロックの再現性、依存解決、`apm audit` などのメリットがあるため）
+- **upstream が `npx skills` 配布のみを想定している場合は `npx skills` でインストールする**（mattpocock/skills, vercel-labs/skills など）
+
+> NOTE: 将来 apm か `npx skills` のどちらかがエコシステムの標準になったら、もう片方を畳んで一本化する。今は両系統を並走させる。
 
 ### ファイル構成
 
