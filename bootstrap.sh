@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+# bootstrap 中に必要な PATH を先に通す。
+# bash で起動された bootstrap.sh は zsh のログイン設定を読まないため、
+# ~/.local/bin と mise の shims を明示的に追加しないと、
+# このスクリプト内でインストール直後の npx / claude / gh などが見つからず、
+# `npx skills` `claude mcp` `npx playwright install` などが初回実行で空振りする。
+# shims 配下のバイナリは後段の `mise install` 完了後に初めて利用可能になる。
+export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
+
 # install zsh
 if [[ "$(uname)" == "Darwin" ]]; then
   # Mac: zsh is pre-installed, ensure brew is available
