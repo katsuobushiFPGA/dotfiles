@@ -164,6 +164,9 @@ command -v fzf &>/dev/null && eval "$(fzf --zsh)"
 # zoxide (z コマンドで頻繁に使うディレクトリにジャンプ)
 command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 
+# git-wt: `git wt` で worktree 移動時に自動 cd するためのラッパー
+command -v git-wt &>/dev/null && eval "$(git-wt --init zsh)"
+
 # ghq + fzf: Ctrl+G で管理下のリポジトリに移動
 if command -v ghq &>/dev/null && command -v fzf &>/dev/null; then
   function ghq-fzf() {
