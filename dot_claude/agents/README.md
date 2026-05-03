@@ -17,6 +17,7 @@ chezmoi で `~/.claude/agents/` にデプロイされる自作エージェント
 | [programmer](programmer.md) | 実装タスクの実行 | オーケストレータから委譲／明示指定 | タスク、対象ファイル、完了条件 |
 | [test-debugger](test-debugger.md) | 落ちたテストの原因切り分け（flaky 判定含む） | テストが落ちた／flaky で困っている | 落ちたテスト、エラーログ、環境 |
 | [tutor](tutor.md) | 技術知識の学習支援（ソクラテス／クイズ／Feynman） | 学びたいとき／理解確認 | トピック、URL、PR、レベル目標 |
+| [quiz-master](quiz-master.md) | 技術知識をクイズで叩いて定着させる出題マシン（即採点・即解説） | 既知知識のテスト／隙間時間で叩く | トピック、URL、PR、難易度、問題数 |
 
 ## 使い分けチャート
 
@@ -31,6 +32,7 @@ chezmoi で `~/.claude/agents/` にデプロイされる自作エージェント
 - 単発の実装だけ委譲したい → `programmer`
 - テストが落ちた／flaky 調査 → `test-debugger`
 - 技術を学びたい／理解度チェック → `tutor`
+- 既知の知識をクイズで叩きたい／テストされたい → `quiz-master`
 
 ## 共通設計パターン
 
