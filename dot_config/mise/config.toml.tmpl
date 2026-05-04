@@ -27,6 +27,16 @@ delta = "latest"
 description = "初回セットアップ（bootstrap.sh を実行）"
 run = "bash ~/dotfiles/bootstrap.sh"
 
+[tasks.check]
+description = "dotfiles の静的チェック"
+run = """
+git diff --check
+bash -n bootstrap.sh bin/claude-notify dot_claude/hooks/session-lib.sh dot_claude/hooks/executable_*.sh
+jq empty dot_claude/settings.json dot_agents/dot_skill-lock.json
+chezmoi apply --dry-run --source ~/dotfiles
+shellcheck bootstrap.sh bin/claude-notify dot_claude/hooks/session-lib.sh dot_claude/hooks/executable_*.sh
+"""
+
 [tasks.update]
 description = "dotfiles・ツール一括アップデート"
 run = """
