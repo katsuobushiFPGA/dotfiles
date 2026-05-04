@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$REPO_DIR"
+
 git diff --check
 bash -n bootstrap.sh bin/claude-notify dot_claude/hooks/session-lib.sh dot_claude/hooks/executable_*.sh
 jq empty dot_claude/settings.json dot_agents/dot_skill-lock.json
-chezmoi apply --dry-run --source .
+chezmoi apply --dry-run --source "$REPO_DIR"
 shellcheck bootstrap.sh bin/claude-notify dot_claude/hooks/session-lib.sh dot_claude/hooks/executable_*.sh
