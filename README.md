@@ -144,7 +144,7 @@ mise の task 機能でよく使う操作をまとめている。
 
 ## Claude Code エージェント
 
-`dot_claude/agents/` に自作エージェント（code-reviewer, doc-reviewer, dev-cycle, programmer, test-debugger, tutor など）を管理している。
+`dot_claude/agents/` に自作エージェント（code-reviewer, doc-reviewer, dev-cycle, programmer, test-debugger, tutor, quiz-master, mock-interviewer など）を管理している。
 
 一覧・使い分け・追加手順は [`dot_claude/agents/README.md`](dot_claude/agents/README.md) を参照。
 
