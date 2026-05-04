@@ -5,6 +5,8 @@ ripgrep = "latest"
 fzf = "latest"
 bat = "latest"
 eza = "latest"
+jq = "latest"
+shellcheck = "latest"
 zoxide = "latest"
 gh = "latest"
 ghq = "latest"
@@ -32,5 +34,14 @@ git -C ~/dotfiles pull --ff-only
 chezmoi apply
 mise upgrade
 (cd ~ && npx -y skills experimental_install)
+_APM_BIN=""
+if [ -x "$HOME/.local/bin/apm" ]; then
+  _APM_BIN="$HOME/.local/bin/apm"
+elif command -v apm >/dev/null 2>&1; then
+  _APM_BIN="$(command -v apm)"
+fi
+if [ -f "$HOME/.apm/apm.yml" ] && [ -n "$_APM_BIN" ]; then
+  (cd "$HOME" && "$_APM_BIN" install -g)
+fi
 npx playwright install chromium
 """
