@@ -8,6 +8,7 @@ README.md
 # chezmoi スクリプト類（ソース管理だけでデプロイ不要）
 bin/
 bootstrap.sh
+scripts/
 
 # tmux プラグイン（TPM が管理するので chezmoi でデプロイしない）
 .config/tmux/plugins/
