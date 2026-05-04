@@ -93,7 +93,7 @@ mise の task 機能でよく使う操作をまとめている。
 |---|---|
 | `mise run init` | 初回セットアップ（bootstrap.sh を実行） |
 | `bash scripts/check` / `mise run check` | dotfiles の静的チェック |
-| `mise run update` | dotfiles・ツール一括アップデート |
+| `bash scripts/update` / `mise run update` | dotfiles・ツール一括アップデート |
 
 ## 管理対象のファイル
 
