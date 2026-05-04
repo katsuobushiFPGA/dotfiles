@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -Eeuo pipefail
 
 # bootstrap 中に必要な PATH を先に通す。
 # bash で起動された bootstrap.sh は zsh のログイン設定を読まないため、
@@ -8,26 +9,59 @@
 # shims 配下のバイナリは後段の `mise install` 完了後に初めて利用可能になる。
 export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
 
-# install zsh
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+find_mise_bin() {
+  if [[ -x "$HOME/.local/bin/mise" ]]; then
+    echo "$HOME/.local/bin/mise"
+  elif command_exists mise; then
+    command -v mise
+  fi
+}
+
+find_apm_bin() {
+  if [[ -x "$HOME/.local/bin/apm" ]]; then
+    echo "$HOME/.local/bin/apm"
+  elif command_exists apm; then
+    command -v apm
+  fi
+}
+
+install_linux_prerequisites() {
+  local packages=()
+  command_exists zsh || packages+=(zsh)
+  command_exists curl || packages+=(curl)
+  command_exists unzip || packages+=(unzip)
+  command_exists fc-list || packages+=(fontconfig)
+
+  if (( ${#packages[@]} > 0 )); then
+    sudo apt-get update -y
+    sudo apt-get install -y ca-certificates "${packages[@]}"
+  fi
+}
+
 if [[ "$(uname)" == "Darwin" ]]; then
   # Mac: zsh is pre-installed, ensure brew is available
-  if ! command -v brew &>/dev/null; then
+  if ! command_exists brew; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
 else
-  # WSL/Linux
-  if ! command -v zsh &>/dev/null; then
-    sudo apt-get update -y && sudo apt-get install -y zsh
-  fi
+  install_linux_prerequisites
 fi
 
 # install chezmoi
-sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/bin
+if [[ ! -x "$HOME/.local/bin/chezmoi" ]]; then
+  sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
+fi
 
 # symlink dotfiles to chezmoi default source dir
 mkdir -p ~/.local/share
 if [[ ! -e ~/.local/share/chezmoi ]]; then
-  ln -s "$(cd "$(dirname "$0")" && pwd)" ~/.local/share/chezmoi
+  ln -s "$REPO_DIR" ~/.local/share/chezmoi
 fi
 
 # apply dotfiles via chezmoi
@@ -40,15 +74,18 @@ if [[ ! -f "$_CHEZMOI_CONFIG" ]]; then
   email = "$_GIT_EMAIL"
 EOF
 fi
-~/.local/bin/chezmoi apply --source "$(cd "$(dirname "$0")" && pwd)"
+"$HOME/.local/bin/chezmoi" apply --source "$REPO_DIR"
 
 # install mise
-if ! command -v mise &>/dev/null && [[ ! -x "$HOME/.local/bin/mise" ]]; then
-  curl https://mise.run | sh
+MISE_BIN="$(find_mise_bin || true)"
+if [[ -z "$MISE_BIN" ]]; then
+  curl -fsSL https://mise.run | sh
 fi
+MISE_BIN="$(find_mise_bin || true)"
+[[ -n "$MISE_BIN" ]] || { echo "mise installation failed" >&2; exit 1; }
 
 # install tools via mise (node, go, etc.)
-~/.local/bin/mise install
+"$MISE_BIN" install
 
 # install oh-my-zsh
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
@@ -57,10 +94,10 @@ fi
 
 # install packages via Brewfile (Mac only)
 if [[ "$(uname)" == "Darwin" ]]; then
-  brew bundle --file="$(cd "$(dirname "$0")" && pwd)/dot_config/homebrew/Brewfile"
+  brew bundle --file="$REPO_DIR/dot_config/homebrew/Brewfile"
 else
   # install docker on Linux/WSL2
-  if ! command -v docker &>/dev/null; then
+  if ! command_exists docker; then
     sudo apt-get install -y ca-certificates curl
     sudo install -m 0755 -d /etc/apt/keyrings
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
@@ -147,26 +184,21 @@ fi
 
 # install claude skills（~/.agents/.skill-lock.json を読んで一括復元）
 # cd しないと npx skills が CWD/.agents 配下にインストールしてしまう
-if command -v npx &>/dev/null && [[ -f "$HOME/.agents/.skill-lock.json" ]]; then
+if command_exists npx && [[ -f "$HOME/.agents/.skill-lock.json" ]]; then
   (cd "$HOME" && npx -y skills experimental_install)
 fi
 
 # install claude skills via apm（~/.apm/apm.yml と apm.lock.yaml を読んで一括復元）
 # cd ~ しないと apm がカレントを project root として扱う
 # ~/.local/bin/apm を優先（PATH の `apm` は Atom 製 package manager の可能性があるため）
-_APM_BIN=""
-if [[ -x "$HOME/.local/bin/apm" ]]; then
-  _APM_BIN="$HOME/.local/bin/apm"
-elif command -v apm &>/dev/null; then
-  _APM_BIN=$(command -v apm)
-fi
+_APM_BIN="$(find_apm_bin || true)"
 if [[ -f "$HOME/.apm/apm.yml" ]] && [[ -n "$_APM_BIN" ]]; then
   (cd "$HOME" && "$_APM_BIN" install -g)
 fi
 unset _APM_BIN
 
 # register MCP servers for claude code
-if command -v claude &>/dev/null; then
+if command_exists claude; then
   claude mcp get chrome-devtools --scope user &>/dev/null || \
     claude mcp add --scope user chrome-devtools -- npx -y chrome-devtools-mcp@latest --slim --headless
   claude mcp get playwright --scope user &>/dev/null || \
@@ -174,6 +206,6 @@ if command -v claude &>/dev/null; then
 fi
 
 # install playwright chromium browser
-if command -v npx &>/dev/null; then
+if command_exists npx; then
   npx playwright install chromium || true
 fi
