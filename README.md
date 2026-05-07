@@ -112,7 +112,7 @@ mise の task 機能でよく使う操作をまとめている。
 | `dot_config/cmux/cheatsheet.txt` | `~/.config/cmux/cheatsheet.txt` |
 | `dot_config/git/ignore` | `~/.config/git/ignore` |
 | `dot_config/homebrew/Brewfile` | `~/.config/homebrew/Brewfile`（Macのみ参照） |
-| `dot_claude/settings.json` | `~/.claude/settings.json` |
+| `dot_claude/settings.json` | `~/.claude/settings.json`（環境ごとに変える項目は `~/.claude/settings.local.json` に切り出してリポジトリ管理外にする） |
 | `dot_claude/CLAUDE.md` | `~/.claude/CLAUDE.md` |
 | `dot_claude/hooks/` | `~/.claude/hooks/` |
 | `dot_claude/agents/` | `~/.claude/agents/` |
