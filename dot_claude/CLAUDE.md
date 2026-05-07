@@ -163,11 +163,18 @@ apm install -g <owner>/<repo>/<skill-name>
 cp ~/.apm/apm.yml ~/dotfiles/dot_apm/apm.yml
 cp ~/.apm/apm.lock.yaml ~/dotfiles/dot_apm/apm.lock.yaml
 
-# resolved_commit が変わっているか確認（generated_at だけの差分はコミット不要）
+# resolved_commit が変わっているか確認
 git -C ~/dotfiles diff dot_apm/apm.lock.yaml
 ```
 
-`apm.yml` には `name`, `version`, `author` などのプロジェクトメタが含まれるが、`-g`（user scope）専用なので個人情報として割り切ってコミットする。`apm.lock.yaml` の `generated_at` はインストール時刻が入るため、依存に変更がないときはタイムスタンプ差分しか出ない（=コミット不要）。
+`apm.yml` には `name`, `version`, `author` などのプロジェクトメタが含まれるが、`-g`（user scope）専用なので個人情報として割り切ってコミットする。
+
+`apm.lock.yaml` の `generated_at` 行は `bootstrap.sh` / `scripts/update` が `apm install -g` 直後に削除する（実行時刻が入って毎回 diff になるため）。手動で `cp` した場合に行が残っていたら、コミット前に以下で除去する：
+
+```bash
+sed -i.bak '/^generated_at:/d' ~/dotfiles/dot_apm/apm.lock.yaml
+rm ~/dotfiles/dot_apm/apm.lock.yaml.bak
+```
 
 ### 新しい環境での再現
 
