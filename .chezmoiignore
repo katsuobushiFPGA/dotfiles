@@ -5,6 +5,10 @@
 # dotfiles リポジトリ自体の README（~/README.md に置きたくない）
 README.md
 
+# dotfiles リポジトリ専用ルール（~/CLAUDE.md にデプロイすると全プロジェクト適用になってしまう）
+CLAUDE.md
+rules/
+
 # chezmoi スクリプト類（ソース管理だけでデプロイ不要）
 bin/
 bootstrap.sh
