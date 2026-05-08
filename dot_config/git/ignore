@@ -4,3 +4,6 @@
 *.swo
 
 **/.claude/settings.local.json
+
+# 個人メモ（リポを横断したスクラッチ用、コミットしない）
+.memo.local.md
