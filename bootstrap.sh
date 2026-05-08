@@ -202,12 +202,36 @@ if [[ -f "$HOME/.apm/apm.yml" ]] && [[ -n "$_APM_BIN" ]]; then
 fi
 unset _APM_BIN
 
-# register MCP servers for claude code
+# install uv (Astral's Python package/tool manager). Serena MCP is launched via
+# `uv tool install`d `serena`, so uv must exist before the MCP register step.
+# INSTALLER_NO_MODIFY_PATH=1 prevents the installer from editing ~/.zshrc / ~/.bashrc;
+# PATH for ~/.local/bin is already managed by dot_zshrc.tmpl and the shim above.
+if ! command_exists uv; then
+  curl -LsSf https://astral.sh/uv/install.sh | env INSTALLER_NO_MODIFY_PATH=1 sh
+fi
+
+# install Serena agent (LSP-backed semantic code tool, served as an MCP server).
+# Pinned to Python 3.13 per upstream Quick Start; --prerelease=allow is required
+# because some transitive deps are pre-1.0.
+# bootstrap.sh only installs when missing; ongoing version bumps are handled by
+# `scripts/update` (`uv tool upgrade serena-agent`).
+if command_exists uv && ! command_exists serena; then
+  uv tool install -p 3.13 'serena-agent@latest' --prerelease=allow
+fi
+
+# register MCP servers for claude code.
+# `claude mcp get <name>` does not accept --scope; it returns 0 if the name is
+# registered in any scope, non-zero otherwise. Use this to make registration idempotent
+# (skip re-adding when already present, avoiding the noisy "already exists" warning).
 if command_exists claude; then
-  claude mcp get chrome-devtools --scope user &>/dev/null || \
+  claude mcp get chrome-devtools &>/dev/null || \
     claude mcp add --scope user chrome-devtools -- npx -y chrome-devtools-mcp@latest --slim --headless
-  claude mcp get playwright --scope user &>/dev/null || \
+  claude mcp get playwright &>/dev/null || \
     claude mcp add --scope user playwright -- npx @playwright/mcp@latest --browser chromium
+  if command_exists serena; then
+    claude mcp get serena &>/dev/null || \
+      claude mcp add --scope user serena -- serena start-mcp-server --context claude-code --project-from-cwd
+  fi
 fi
 
 # install playwright chromium browser

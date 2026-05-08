@@ -45,6 +45,12 @@ if [[ -f "$HOME/.apm/apm.yml" && -n "$APM_BIN" ]]; then
   fi
 fi
 
+if command_exists uv; then
+  # serena が未インストールの場合 uv は exit 1 になり得る（uv のバージョン依存）。
+  # set -Eeuo pipefail 配下で update を止めないよう || true で握る。初回 install は bootstrap.sh が担当。
+  uv tool upgrade serena-agent --prerelease=allow || true
+fi
+
 if command_exists npx; then
   npx playwright install chromium
 fi

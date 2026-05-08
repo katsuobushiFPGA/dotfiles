@@ -33,7 +33,9 @@ bash bootstrap.sh
 | apm (Agent Package Manager) | GitHub Releases から `~/.local/bin/apm` に展開 | Brewfile (`brew "microsoft/apm/apm"`) |
 | Docker | apt でインストール | Brewfile (`cask "docker"`) |
 | Brewfile 経由パッケージ（cmux 等） | — | ✅ |
-| Claude Code MCP（chrome-devtools, playwright） | ✅ | ✅ |
+| uv（Astral 製 Python ツールマネージャ。Serena の前提） | ✅ | ✅ |
+| Serena Agent（`uv tool install serena-agent`） | ✅ | ✅ |
+| Claude Code MCP（chrome-devtools, playwright, serena） | ✅ | ✅ |
 | Playwright Chromium | ✅ | ✅ |
 
 その他の CLI ツール（ripgrep, fzf, bat, eza, jq, shellcheck, gh, ghq, lazygit, difit, git-wt など）は mise が管理する。詳細は [`dot_config/mise/config.toml.tmpl`](dot_config/mise/config.toml.tmpl) を参照。
@@ -74,7 +76,8 @@ mise run update
 3. `mise upgrade` — mise 管理ツールを一括アップグレード
 4. `npx skills experimental_install` — `npx skills` 管理のスキルを再インストール
 5. `~/.local/bin/apm install -g` — apm 管理のスキルを再インストール（WSL では Atom 製 `apm` との衝突を避けるためフルパス推奨。Mac は `apm install -g` で OK）
-6. `npx playwright install chromium` — Playwright MCP 用ブラウザを最新化
+6. `uv tool upgrade serena-agent` — Serena MCP（LSP ベースの意味解析ツール）を最新化
+7. `npx playwright install chromium` — Playwright MCP 用ブラウザを最新化
 
 ### dotfiles だけ反映したい場合
 

@@ -7,6 +7,12 @@ bin/chezmoi
 # Playwright MCP のログ・スナップショット
 .playwright-mcp/
 
+# Serena MCP のプロジェクトメタ（cwd を Serena に渡すと自動生成される）
+.serena/
+
+# Neovim のクラッシュログ
+.nvimlog
+
 # tmux plugins (TPM がインストールするため不要)
 dot_config/tmux/plugins/
 
