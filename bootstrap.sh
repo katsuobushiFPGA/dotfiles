@@ -202,15 +202,17 @@ if [[ -f "$HOME/.apm/apm.yml" ]] && [[ -n "$_APM_BIN" ]]; then
 fi
 unset _APM_BIN
 
-# install uv (Astral's Python package/tool manager). Serena MCP is launched via
-# `uv tool install`d `serena`, so uv must exist before the MCP register step.
-# INSTALLER_NO_MODIFY_PATH=1 prevents the installer from editing ~/.zshrc / ~/.bashrc;
-# PATH for ~/.local/bin is already managed by dot_zshrc.tmpl and the shim above.
-if ! command_exists uv; then
-  curl -LsSf https://astral.sh/uv/install.sh | env INSTALLER_NO_MODIFY_PATH=1 sh
+# Migrate from standalone curl install of uv: PATH is `~/.local/bin:.../mise/shims`,
+# so a stale `~/.local/bin/uv` would shadow the mise shim. Remove only after we
+# confirm the mise shim exists, otherwise we'd brick environments without uv.
+# NOTE: This block must run AFTER `mise install` (above). The shim at this path
+# is created by mise during install; checking -L here implicitly relies on that order.
+if [[ -L "$HOME/.local/share/mise/shims/uv" ]]; then
+  rm -f "$HOME/.local/bin/uv" "$HOME/.local/bin/uvx"
 fi
 
 # install Serena agent (LSP-backed semantic code tool, served as an MCP server).
+# uv 自体は mise が管理する（dot_config/mise/config.toml.tmpl の `uv = "latest"`）。
 # Pinned to Python 3.13 per upstream Quick Start; --prerelease=allow is required
 # because some transitive deps are pre-1.0.
 # bootstrap.sh only installs when missing; ongoing version bumps are handled by

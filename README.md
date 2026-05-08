@@ -33,12 +33,11 @@ bash bootstrap.sh
 | apm (Agent Package Manager) | GitHub Releases から `~/.local/bin/apm` に展開 | Brewfile (`brew "microsoft/apm/apm"`) |
 | Docker | apt でインストール | Brewfile (`cask "docker"`) |
 | Brewfile 経由パッケージ（cmux 等） | — | ✅ |
-| uv（Astral 製 Python ツールマネージャ。Serena の前提） | ✅ | ✅ |
-| Serena Agent（`uv tool install serena-agent`） | ✅ | ✅ |
+| Serena Agent（`uv tool install serena-agent`、uv 自体は mise 管理） | ✅ | ✅ |
 | Claude Code MCP（chrome-devtools, playwright, serena, context7） | ✅ | ✅ |
 | Playwright Chromium | ✅ | ✅ |
 
-その他の CLI ツール（ripgrep, fzf, bat, eza, jq, shellcheck, gh, ghq, lazygit, difit, git-wt など）は mise が管理する。詳細は [`dot_config/mise/config.toml.tmpl`](dot_config/mise/config.toml.tmpl) を参照。
+その他の CLI ツール（ripgrep, fzf, bat, eza, jq, shellcheck, gh, ghq, lazygit, difit, git-wt, uv など）は mise が管理する。詳細は [`dot_config/mise/config.toml.tmpl`](dot_config/mise/config.toml.tmpl) を参照。
 
 ### 3. chezmoiで設定を反映
 
