@@ -228,6 +228,8 @@ if command_exists claude; then
     claude mcp add --scope user chrome-devtools -- npx -y chrome-devtools-mcp@latest --slim --headless
   claude mcp get playwright &>/dev/null || \
     claude mcp add --scope user playwright -- npx @playwright/mcp@latest --browser chromium
+  claude mcp get context7 &>/dev/null || \
+    claude mcp add --scope user context7 -- npx -y @upstash/context7-mcp@latest
   if command_exists serena; then
     claude mcp get serena &>/dev/null || \
       claude mcp add --scope user serena -- serena start-mcp-server --context claude-code --project-from-cwd
