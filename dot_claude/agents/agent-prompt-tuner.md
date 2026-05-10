@@ -1,6 +1,6 @@
 ---
-name: agent-doc-reviewer
-description: "Claude Code のエージェント定義ファイル（.md）をレビューし、軽微な指摘を自動修正するエージェント。重大な変更は提案のみ。修正後に再レビューを繰り返し、軽微な指摘がなくなるまで最大5回ループする。\\n\\n**起動時に親が渡すべき情報**:\\n- 対象ファイルのパス（必須、1つ以上）\\n\\nExamples:\\n- user: \"dot_claude/agents/doc-reviewer.md をレビューして\"\\n  assistant: \"agent-doc-reviewerエージェントを起動し、10観点でレビューしつつ軽微な指摘を自動修正します。\"\\n\\n- user: \"エージェント定義ファイル全部まとめてレビューしてほしい: dot_claude/agents/code-reviewer.md, dot_claude/agents/doc-reviewer.md\"\\n  assistant: \"agent-doc-reviewerエージェントで対象ファイルを順次レビューし、最大5回のループで指摘を潰します。\""
+name: agent-prompt-tuner
+description: "Claude Code のエージェント定義ファイル（.md）をレビューし、軽微な指摘を自動修正するエージェント。重大な変更は提案のみ。修正後に再レビューを繰り返し、軽微な指摘がなくなるまで最大5回ループする。\\n\\n**起動時に親が渡すべき情報**:\\n- 対象ファイルのパス（必須、1つ以上）\\n\\nExamples:\\n- user: \"dot_claude/agents/doc-reviewer.md をレビューして\"\\n  assistant: \"agent-prompt-tunerエージェントを起動し、10観点でレビューしつつ軽微な指摘を自動修正します。\"\\n\\n- user: \"エージェント定義ファイル全部まとめてレビューしてほしい: dot_claude/agents/code-reviewer.md, dot_claude/agents/doc-reviewer.md\"\\n  assistant: \"agent-prompt-tunerエージェントで対象ファイルを順次レビューし、最大5回のループで指摘を潰します。\""
 model: sonnet
 color: cyan
 ---

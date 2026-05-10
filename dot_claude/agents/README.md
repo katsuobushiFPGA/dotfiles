@@ -12,7 +12,7 @@ chezmoi で `~/.claude/agents/` にデプロイされる自作エージェント
 | [doc-reviewer](doc-reviewer.md) | 技術ドキュメントのレビュー（正確性・構成・誤字脱字） | ドキュメント作成・更新後 | 対象ファイル、想定読者 |
 | [system-design-reviewer](system-design-reviewer.md) | 設計書・RFC のレビュー（要件整合・非機能・代替案） | 設計ドキュメント作成後 | 設計書、要件定義書、規模感 |
 | [marketing-reviewer](marketing-reviewer.md) | Web マーケ観点（KPI/CMP/SEO/CWV）のレビュー | 要件〜運用の各フェーズ | 対象、フェーズ、業態 |
-| [agent-doc-reviewer](agent-doc-reviewer.md) | エージェント定義ファイルのメタレビュー | エージェント作成・更新後 | 対象エージェントのパス |
+| [agent-prompt-tuner](agent-prompt-tuner.md) | エージェント定義ファイルのメタレビュー（軽微指摘は自動修正） | エージェント作成・更新後 | 対象エージェントのパス |
 | [dev-cycle](dev-cycle.md) | 実装＋レビューのループを回すオーケストレータ | programmer と code-reviewer を反復委譲したい時 | タスク、対象ファイル、完了条件 |
 | [programmer](programmer.md) | 実装タスクの実行 | オーケストレータから委譲／明示指定 | タスク、対象ファイル、完了条件 |
 | [test-debugger](test-debugger.md) | 落ちたテストの原因切り分け（flaky 判定含む） | テストが落ちた／flaky で困っている | 落ちたテスト、エラーログ、環境 |
@@ -28,7 +28,7 @@ chezmoi で `~/.claude/agents/` にデプロイされる自作エージェント
 - ドキュメント書いた → `doc-reviewer`
 - 設計した／RFC 書いた → `system-design-reviewer`
 - マーケ観点でのチェック → `marketing-reviewer`
-- エージェント定義を書いた／直したい → `agent-doc-reviewer`
+- エージェント定義を書いた／直したい → `agent-prompt-tuner`
 - 実装＋レビューのループを回したい → `dev-cycle`（programmer と code-reviewer を内部で呼ぶ）
 - 単発の実装だけ委譲したい → `programmer`
 - テストが落ちた／flaky 調査 → `test-debugger`
@@ -74,7 +74,7 @@ memory: user         # ユーザー横断で覚えたい場合のみ（現状 co
 
 1. `dot_claude/agents/<name>.md` を作成（既存を雛形にする）
 2. `chezmoi apply ~/.claude/agents/<name>.md` で反映
-3. **新しいセッションで** `agent-doc-reviewer` に自己レビューさせる
+3. **新しいセッションで** `agent-prompt-tuner` に自己レビューさせる
    - 既存セッションだと agent 一覧がキャッシュされていて呼び出せない場合がある
    - その場合は `general-purpose` 経由で proxy するか、セッションを切り直す
 4. 指摘を反映してコミット（修正単位ごとに分けると差分が追いやすい）

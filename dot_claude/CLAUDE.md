@@ -45,7 +45,7 @@
 | 実装コード（.ts/.tsx/.js/.py/.go/.rb/.rs/.sh など） | `code-reviewer` |
 | ドキュメントのみ（.md） | `doc-reviewer` |
 | 設計書・RFC のみ | `system-design-reviewer` |
-| エージェント定義ファイルのみ | `agent-doc-reviewer` |
+| エージェント定義ファイルのみ | `agent-prompt-tuner` |
 
 **スコープ**: 全プロジェクト共通ルール。プロジェクト固有の `CLAUDE.md` で明示的に上書き／無効化されていない限り適用する。
 
