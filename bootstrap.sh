@@ -194,9 +194,12 @@ fi
 _APM_BIN="$(find_apm_bin || true)"
 if [[ -f "$HOME/.apm/apm.yml" ]] && [[ -n "$_APM_BIN" ]]; then
   (cd "$HOME" && "$_APM_BIN" install -g)
-  # apm install -g は現状 generated_at を書き戻さないが、apm の将来バージョン変化に備えて除去
   if [[ -f "$HOME/.apm/apm.lock.yaml" ]]; then
-    sed -i.bak '/^generated_at:/d' "$HOME/.apm/apm.lock.yaml"
+    # apm バージョン・実行環境に依存して変動するフィールドを除去
+    sed -i.bak \
+      -e '/^generated_at:/d' \
+      -e '/^apm_version:/d' \
+      "$HOME/.apm/apm.lock.yaml"
     rm -f "$HOME/.apm/apm.lock.yaml.bak"
   fi
 fi

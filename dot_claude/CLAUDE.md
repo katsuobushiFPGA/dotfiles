@@ -169,10 +169,15 @@ git -C ~/dotfiles diff dot_apm/apm.lock.yaml
 
 `apm.yml` には `name`, `version`, `author` などのプロジェクトメタが含まれるが、`-g`（user scope）専用なので個人情報として割り切ってコミットする。
 
-`apm.lock.yaml` の `generated_at` 行は `bootstrap.sh` / `scripts/update` が `apm install -g` 直後に削除する（実行時刻が入って毎回 diff になるため）。手動で `cp` した場合に行が残っていたら、コミット前に以下で除去する：
+`apm.lock.yaml` の `generated_at` と `apm_version` は `bootstrap.sh` / `scripts/update` が `apm install -g` 直後に削除する（実行環境・apm バージョンに依存して変動するため）。`scripts/update` は正規化後に自動で `dot_apm/apm.lock.yaml` へコピーするので、通常は手動コピーは不要。
+
+手動で `cp` が必要な場合はコミット前に以下で除去する：
 
 ```bash
-sed -i.bak '/^generated_at:/d' ~/dotfiles/dot_apm/apm.lock.yaml
+sed -i.bak \
+  -e '/^generated_at:/d' \
+  -e '/^apm_version:/d' \
+  ~/dotfiles/dot_apm/apm.lock.yaml
 rm ~/dotfiles/dot_apm/apm.lock.yaml.bak
 ```
 
