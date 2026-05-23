@@ -134,7 +134,7 @@
 ```bash
 # ~/.agents/ 配下から実行すること（カレントディレクトリに .agents/ が作られる）
 cd ~
-npx skills add https://github.com/<owner>/<repo> --skill <skill-name> --yes
+npx skills add -g https://github.com/<owner>/<repo> --skill <skill-name> --yes
 ```
 
 **注意**: dotfiles ディレクトリで実行すると `dotfiles/.agents/` にインストールされてしまう。  
@@ -147,6 +147,30 @@ rmdir ~/dotfiles/.agents/skills ~/dotfiles/.agents
 ```
 
 シンボリックリンクが作られなかった場合も同様に手動で作成する。
+
+**注意 (npx skills 1.5.x 以降)**: `add -g` でインストールしても `~/.agents/.skill-lock.json` に**自動では追記されない**（旧バージョンと挙動が変わった）。新環境での再現性を保つため、インストール後に lock を手動追記する：
+
+```bash
+# 既存エントリ形式に合わせて追記（git tree hash は upstream から取得）
+GH_REPO=<owner>/<repo>
+SKILL_NAME=<skill-name>
+TREE_HASH=$(gh api repos/$GH_REPO/git/trees/main:skills/$SKILL_NAME --jq '.sha')
+NOW=$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")
+jq --arg name "$SKILL_NAME" --arg repo "$GH_REPO" --arg hash "$TREE_HASH" --arg now "$NOW" '
+  .skills[$name] = {
+    source: $repo,
+    sourceType: "github",
+    sourceUrl: ("https://github.com/" + $repo + ".git"),
+    skillPath: ("skills/" + $name + "/SKILL.md"),
+    skillFolderHash: $hash,
+    installedAt: $now,
+    updatedAt: $now
+  }
+' ~/.agents/.skill-lock.json > /tmp/lock.json && mv /tmp/lock.json ~/.agents/.skill-lock.json
+cp ~/.agents/.skill-lock.json ~/dotfiles/dot_agents/dot_skill-lock.json
+```
+
+`skillPath` はリポジトリ構造に合わせる（`skills/<name>/SKILL.md` パターン以外もある）。
 
 #### apm の場合
 
