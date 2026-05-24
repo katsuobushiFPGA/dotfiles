@@ -104,8 +104,8 @@
 
 | パス | 役割 |
 |---|---|
-| `~/.claude/skills/<name>` | Claude Code が読むスキル本体。`npx skills` 系はシンボリックリンク、apm 系は実体ディレクトリ、自作は単一 `.md` |
-| `dotfiles/dot_claude/skills/<name>.md` | 自作スキル（chezmoi で `~/.claude/skills/` に直接デプロイ） |
+| `~/.claude/skills/<name>/` | Claude Code が読むスキル本体（ディレクトリ内に `SKILL.md`）。`npx skills` 系はシンボリックリンク、apm 系・自作は実体ディレクトリ |
+| `dotfiles/dot_claude/skills/<name>/SKILL.md` | 自作スキル（chezmoi で `~/.claude/skills/<name>/` にデプロイ） |
 
 #### `npx skills` 系（mattpocock/skills, vercel-labs/skills など）
 
@@ -216,14 +216,15 @@ bootstrap.sh が両方の系統を自動で復元する：
 
 ### 自作スキルを追加する
 
-`dotfiles/dot_claude/skills/<name>.md` を作成して `chezmoi apply` するだけ。
+`dotfiles/dot_claude/skills/<name>/SKILL.md` を作成して `chezmoi apply` するだけ。Claude Code はスキルを **ディレクトリ内の `SKILL.md`** として認識するため、単体 `.md` ファイルでは `/skill-name` として呼び出せない。
 
 ```bash
 # 作成
-vim ~/dotfiles/dot_claude/skills/my-skill.md
+mkdir -p ~/dotfiles/dot_claude/skills/my-skill
+vim ~/dotfiles/dot_claude/skills/my-skill/SKILL.md
 
 # 反映
-chezmoi apply ~/.claude/skills/my-skill.md
+chezmoi apply ~/.claude/skills/my-skill
 ```
 
 ---
