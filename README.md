@@ -159,6 +159,7 @@ mise の task 機能でよく使う操作をまとめている。
 |---|---|
 | `dev-cycle` | programmer ＋ code-reviewer のサイクルを最大3回回す開発フロー |
 | `js-debug` | JS/TS/Next.js のランタイム不具合を Playwright 等で再現・観測して原因特定 |
+| `a11y-ux-audit` | サイトのリンクを辿り、ページごとに a11y/ユーザビリティ/パフォーマンスを評価（Lighthouse＋Nielsen ヒューリスティック）してレポート生成 |
 
 外部リポジトリからインストールするスキルは 2 系統で管理している：
 
