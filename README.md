@@ -160,6 +160,8 @@ mise の task 機能でよく使う操作をまとめている。
 | `dev-cycle` | programmer ＋ code-reviewer のサイクルを最大3回回す開発フロー |
 | `js-debug` | JS/TS/Next.js のランタイム不具合を Playwright 等で再現・観測して原因特定 |
 | `a11y-ux-audit` | サイトのリンクを辿り、ページごとに a11y/ユーザビリティ/パフォーマンスを評価（Lighthouse＋Nielsen ヒューリスティック）してレポート生成 |
+| `po-align` | PO から受け取った要件・仕様を WHY→HOW→FEASIBILITY の3軸でインタビューし、開発着手前の認識合わせドキュメントを生成 |
+| `retro` | 過去 N 時間の Claude Code セッションを横断で振り返り、作業ログを `~/.claude/retro/log/` に記録 |
 
 外部リポジトリからインストールするスキルは 2 系統で管理している：
 
