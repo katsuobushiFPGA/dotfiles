@@ -32,10 +32,10 @@
       "Read(id_rsa*)",
       "Read(*.key)",
       "Read(*.pem)",
-      "Write(.env*)",
-      "Write(id_rsa*)",
-      "Write(*.key)",
-      "Write(*.pem)"
+      "Edit(.env*)",
+      "Edit(id_rsa*)",
+      "Edit(*.key)",
+      "Edit(*.pem)"
     ]
   },
   "env": {
