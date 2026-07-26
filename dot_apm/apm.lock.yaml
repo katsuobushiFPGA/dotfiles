@@ -1,15 +1,86 @@
 lockfile_version: '1'
 dependencies:
 - repo_url: mizchi/skills
+  name: empirical-prompt-tuning
   host: github.com
   resolved_commit: 2036fb480a8b442c7b6298595b38c9a7a25b97af
+  version: unknown
   virtual_path: empirical-prompt-tuning
   is_virtual: true
   package_type: claude_skill
   deployed_files:
   - .agents/skills/empirical-prompt-tuning
   - .claude/skills/empirical-prompt-tuning
+  - .claude/skills/empirical-prompt-tuning/SKILL-ja.md
+  - .claude/skills/empirical-prompt-tuning/SKILL.md
   - .config/opencode/skills/empirical-prompt-tuning
   - .copilot/skills/empirical-prompt-tuning
   - .gemini/skills/empirical-prompt-tuning
+  deployed_file_hashes:
+    .claude/skills/empirical-prompt-tuning/SKILL-ja.md: sha256:5d1e462c3d8aea4a60ce726e4ec99c6663c27a9f801020746b8d9de8990bb01a
+    .claude/skills/empirical-prompt-tuning/SKILL.md: sha256:0a5fc3ad64c882a5552554011be8f13bcb442344be36f32bc86336edcbba8007
   content_hash: sha256:9c64f10bca463d3ea059d1659d4dd9fddfd90239825c44f1be20c18a2e15b69a
+deployments:
+- kind: project-relative
+  target: agents
+  value: .agents/skills/empirical-prompt-tuning
+  runtime: null
+  scope: project
+  owners:
+  - mizchi/skills/empirical-prompt-tuning
+  active_owner: mizchi/skills/empirical-prompt-tuning
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/empirical-prompt-tuning
+  runtime: null
+  scope: project
+  owners:
+  - mizchi/skills/empirical-prompt-tuning
+  active_owner: mizchi/skills/empirical-prompt-tuning
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/empirical-prompt-tuning/SKILL-ja.md
+  runtime: null
+  scope: project
+  owners:
+  - mizchi/skills/empirical-prompt-tuning
+  active_owner: mizchi/skills/empirical-prompt-tuning
+  content_hash: sha256:5d1e462c3d8aea4a60ce726e4ec99c6663c27a9f801020746b8d9de8990bb01a
+- kind: project-relative
+  target: claude
+  value: .claude/skills/empirical-prompt-tuning/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - mizchi/skills/empirical-prompt-tuning
+  active_owner: mizchi/skills/empirical-prompt-tuning
+  content_hash: sha256:0a5fc3ad64c882a5552554011be8f13bcb442344be36f32bc86336edcbba8007
+- kind: project-relative
+  target: gemini
+  value: .gemini/skills/empirical-prompt-tuning
+  runtime: null
+  scope: project
+  owners:
+  - mizchi/skills/empirical-prompt-tuning
+  active_owner: mizchi/skills/empirical-prompt-tuning
+  content_hash: null
+- kind: project-relative
+  target: legacy
+  value: .config/opencode/skills/empirical-prompt-tuning
+  runtime: null
+  scope: project
+  owners:
+  - mizchi/skills/empirical-prompt-tuning
+  active_owner: mizchi/skills/empirical-prompt-tuning
+  content_hash: null
+- kind: project-relative
+  target: legacy
+  value: .copilot/skills/empirical-prompt-tuning
+  runtime: null
+  scope: project
+  owners:
+  - mizchi/skills/empirical-prompt-tuning
+  active_owner: mizchi/skills/empirical-prompt-tuning
+  content_hash: null
