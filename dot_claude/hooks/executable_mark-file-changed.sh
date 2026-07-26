@@ -1,6 +1,7 @@
 #!/bin/bash
 # Write/Edit ツール使用時にセッションフラグを立てる
 
+# shellcheck source=/dev/null
 source ~/.claude/hooks/session-lib.sh
 
 INPUT=$(cat)
@@ -9,7 +10,8 @@ TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty')
 CWD=$(echo "$INPUT" | jq -r '.cwd // empty')
 
 [[ -z "$SESSION_ID" ]] && exit 0
-[[ -n "$CWD" ]] && cd "$CWD" 2>/dev/null
+# CWD が指定されていて cd に失敗したら安全に抜ける（フックの cwd は不安定なため）
+[[ -n "$CWD" ]] && { cd "$CWD" 2>/dev/null || exit 0; }
 
 case "$TOOL_NAME" in
   Write|Edit|NotebookEdit|Bash)

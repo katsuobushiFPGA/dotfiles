@@ -3,6 +3,7 @@
 # README.md / dot_claude/CLAUDE.md が同じセッションで更新されていない場合に警告する。
 # PostToolUse: Bash 用。非ブロッキング（常に exit 0）。
 
+# shellcheck source=/dev/null
 source ~/.claude/hooks/session-lib.sh
 
 INPUT=$(cat)
@@ -45,12 +46,17 @@ if echo "$CHANGED" | grep -qE "$DOC_RE"; then
   exit 0
 fi
 
+# 各行の先頭に "  - " を付ける（改行をパラメータ展開で置換。sed 不要）
+# $'\n' はダブルクォート内では展開されないため、改行を変数に入れて参照する
+NL=$'\n'
+TRIGGERED_LIST="  - ${TRIGGERED//$NL/$NL  - }"
+
 cat >&2 <<EOF
 ⚠️  ドキュメント整合性チェック
     dotfiles 管理対象が変更されましたが README.md / dot_claude/CLAUDE.md は更新されていません。
 
 変更されたファイル:
-$(echo "$TRIGGERED" | sed 's/^/  - /')
+$TRIGGERED_LIST
 
 ドキュメント更新が不要な軽微変更なら無視してOK。
 詳細は dot_claude/CLAUDE.md の「ドキュメント整合性ルール」を参照。

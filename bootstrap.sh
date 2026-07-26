@@ -95,6 +95,21 @@ fi
 # install packages via Brewfile (Mac only)
 if [[ "$(uname)" == "Darwin" ]]; then
   brew bundle --file="$REPO_DIR/dot_config/homebrew/Brewfile"
+
+  # Docker Desktop の CLI プラグイン（docker compose / buildx 等）を有効化する。
+  # Docker Desktop は GUI 初回起動時に ~/.docker/cli-plugins へリンクを張るが、
+  # bootstrap は GUI を起動しないため `docker compose` が使えないままになる。
+  # 手動でリンクして CLI から即使える状態にする（ln -sfn で冪等）。
+  _DOCKER_PLUGINS_DIR="/Applications/Docker.app/Contents/Resources/cli-plugins"
+  if [[ -d "$_DOCKER_PLUGINS_DIR" ]]; then
+    mkdir -p "$HOME/.docker/cli-plugins"
+    for _DOCKER_PLUGIN in "$_DOCKER_PLUGINS_DIR"/*; do
+      [[ -e "$_DOCKER_PLUGIN" ]] || continue
+      ln -sfn "$_DOCKER_PLUGIN" "$HOME/.docker/cli-plugins/$(basename "$_DOCKER_PLUGIN")"
+    done
+    unset _DOCKER_PLUGIN
+  fi
+  unset _DOCKER_PLUGINS_DIR
 else
   # install docker on Linux/WSL2
   if ! command_exists docker; then
@@ -102,6 +117,8 @@ else
     sudo install -m 0755 -d /etc/apt/keyrings
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
     sudo chmod a+r /etc/apt/keyrings/docker.gpg
+    # /etc/os-release は Linux ランタイムのファイルで shellcheck からは追えないため source を無視させる
+    # shellcheck source=/dev/null
     echo \
       "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
       $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \

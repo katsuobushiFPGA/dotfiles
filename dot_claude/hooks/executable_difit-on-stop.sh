@@ -3,12 +3,14 @@
 
 export PATH="$HOME/.local/share/mise/shims:/usr/local/bin:$PATH"
 
+# shellcheck source=/dev/null
 source ~/.claude/hooks/session-lib.sh
 
 INPUT=$(cat)
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // empty')
 CWD=$(echo "$INPUT" | jq -r '.cwd // empty')
-[[ -n "$CWD" ]] && cd "$CWD" 2>/dev/null
+# CWD が指定されていて cd に失敗したら安全に抜ける（フックの cwd は不安定なため）
+[[ -n "$CWD" ]] && { cd "$CWD" 2>/dev/null || exit 0; }
 
 git rev-parse --git-dir >/dev/null 2>&1 || exit 0
 

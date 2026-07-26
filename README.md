@@ -31,7 +31,7 @@ bash bootstrap.sh
 | JetBrainsMono Nerd Font | ✅ | ✅ |
 | Neovim (最新版) | GitHub Releases から取得 | Brewfile (`brew "neovim"`) |
 | apm (Agent Package Manager) | GitHub Releases から `~/.local/bin/apm` に展開 | Brewfile (`brew "microsoft/apm/apm"`) |
-| Docker | apt でインストール | Brewfile (`cask "docker"`) |
+| Docker | apt でインストール（`docker compose` プラグイン含む） | Brewfile (`cask "docker-desktop"`)。`docker compose`/`buildx` 等のプラグインを `~/.docker/cli-plugins` にリンク |
 | Brewfile 経由パッケージ（cmux 等） | — | ✅ |
 | Serena Agent（`uv tool install serena-agent`、uv 自体は mise 管理） | ✅ | ✅ |
 | Claude Code 本体（`claude`、mise の aqua backend で管理） | ✅ | ✅ |
