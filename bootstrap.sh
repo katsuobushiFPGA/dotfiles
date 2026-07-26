@@ -89,7 +89,7 @@ MISE_BIN="$(find_mise_bin || true)"
 
 # install oh-my-zsh
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 fi
 
 # install packages via Brewfile (Mac only)
@@ -212,6 +212,21 @@ unset _APM_BIN
 # is created by mise during install; checking -L here implicitly relies on that order.
 if [[ -L "$HOME/.local/share/mise/shims/uv" ]]; then
   rm -f "$HOME/.local/bin/uv" "$HOME/.local/bin/uvx"
+fi
+
+# Migrate Claude Code from a manual Homebrew cask install to mise (aqua backend).
+# claude 本体は mise (dot_config/mise/config.toml.tmpl の `claude = "latest"`) が入れる。
+# mise shim が生成済みのときだけ、Brewfile 管理外の cask を掃除する。
+# NOTE: PATH は `~/.local/bin:.../mise/shims:...` で cask の /usr/local/bin/claude は
+# mise shim より後ろ。shim が勝つため correctness ではなく重複解消（cleanliness）。
+if [[ "$(uname)" == "Darwin" ]] \
+  && [[ -L "$HOME/.local/share/mise/shims/claude" ]] \
+  && brew list --cask claude-code &>/dev/null; then
+  # 後片付けは本流ではないため、失敗しても set -e で全体を止めない（soft-fail）。
+  # 止めると後続の MCP 登録・Playwright インストールが巻き添えでスキップされ、
+  # かつ cask が残るので次回再実行でも同じ場所で失敗し続ける（冪等性が壊れる）。
+  brew uninstall --cask claude-code \
+    || echo "warning: failed to uninstall claude-code cask (non-fatal; mise shim still takes priority)" >&2
 fi
 
 # install Serena agent (LSP-backed semantic code tool, served as an MCP server).

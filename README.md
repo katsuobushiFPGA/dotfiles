@@ -34,6 +34,7 @@ bash bootstrap.sh
 | Docker | apt でインストール | Brewfile (`cask "docker"`) |
 | Brewfile 経由パッケージ（cmux 等） | — | ✅ |
 | Serena Agent（`uv tool install serena-agent`、uv 自体は mise 管理） | ✅ | ✅ |
+| Claude Code 本体（`claude`、mise の aqua backend で管理） | ✅ | ✅ |
 | Claude Code MCP（chrome-devtools, playwright, serena, context7） | ✅ | ✅ |
 | Playwright Chromium | ✅ | ✅ |
 
