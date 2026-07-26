@@ -28,6 +28,17 @@ if [[ "${DOTFILES_UPDATE_REEXECED:-}" != "1" ]]; then
   fi
 fi
 
+# apm.lock は後段の `apm install -g` で毎回再生成され target がドリフトするため、
+# 通常の `chezmoi apply` だと「手動変更を上書きするか」の対話プロンプトが出て
+# 非対話実行（CI・スクリプト経由）で止まる。どのみち再生成するので apm.lock だけ
+# 先に --force で source 状態へ揃え、プロンプトを回避する。--force はこのパスのみに
+# 効き、settings.json 等の他のローカル変更は後続の通常 apply で対話確認させる（破壊しない）。
+# target 側の存在も確認する: ~/.apm/ 未作成のマシンでは target 指定 apply が親ディレクトリを
+# 掘れず失敗し set -e で全体停止するため。target が無ければ解消すべきドリフトも無いので、
+# この特別扱いをスキップして後続の通常 apply（親ごと新規作成、プロンプト無し）に任せる。
+[[ -f "$REPO_DIR/dot_apm/apm.lock.yaml" && -f "$HOME/.apm/apm.lock.yaml" ]] && \
+  chezmoi apply --force --source "$REPO_DIR" "$HOME/.apm/apm.lock.yaml"
+
 chezmoi apply --source "$REPO_DIR"
 mise upgrade
 
