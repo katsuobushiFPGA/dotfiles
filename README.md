@@ -38,7 +38,7 @@ bash bootstrap.sh
 | Claude Code MCP（chrome-devtools, playwright, serena, context7） | ✅ | ✅ |
 | Playwright Chromium | ✅ | ✅ |
 
-その他の CLI ツール（ripgrep, fzf, bat, eza, jq, shellcheck, gh, ghq, lazygit, difit, git-wt, uv など）は mise が管理する。詳細は [`dot_config/mise/config.toml.tmpl`](dot_config/mise/config.toml.tmpl) を参照。
+その他の CLI ツール（ripgrep, fzf, bat, eza, jq, shellcheck, gh, ghq, lazygit, difit, git-wt, uv, awscli など）は mise が管理する。詳細は [`dot_config/mise/config.toml.tmpl`](dot_config/mise/config.toml.tmpl) を参照。
 
 ### 3. chezmoiで設定を反映
 
