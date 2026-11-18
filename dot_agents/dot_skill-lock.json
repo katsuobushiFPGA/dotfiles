@@ -108,6 +108,16 @@
       "skillFolderHash": "b88e76f066ab4bdba1c905862d733c23fab14bc4",
       "installedAt": "2026-05-24T00:05:00.000Z",
       "updatedAt": "2026-05-24T00:05:00.000Z"
+    },
+    "yomiyasu": {
+      "source": "nanaism/yomiyasu",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/nanaism/yomiyasu.git",
+      "commit": "3042154ee537c1b7093eefed00a97b40aae9446d",
+      "skillPath": "skills/yomiyasu/SKILL.md",
+      "skillFolderHash": "185b4956edc817e6eacd89152785ec4a62507ec5",
+      "installedAt": "2026-11-18T05:00:52.294Z",
+      "updatedAt": "2026-11-18T05:00:52.294Z"
     }
   },
   "dismissed": {
