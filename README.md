@@ -95,7 +95,7 @@ mise の task 機能でよく使う操作をまとめている。
 | コマンド | 内容 |
 |---|---|
 | `mise run init` | 初回セットアップ（bootstrap.sh を実行） |
-| `bash scripts/check` / `mise run check` | dotfiles の静的チェック |
+| `bash scripts/check` / `mise run check` | dotfiles の静的チェック（エージェント定義の frontmatter 検証を含む） |
 | `bash scripts/update` / `mise run update` | dotfiles・ツール一括アップデート |
 
 ## 管理対象のファイル
@@ -163,6 +163,7 @@ mise の task 機能でよく使う操作をまとめている。
 | `a11y-ux-audit` | サイトのリンクを辿り、ページごとに a11y/ユーザビリティ/パフォーマンスを評価（Lighthouse＋Nielsen ヒューリスティック）してレポート生成 |
 | `po-align` | PO から受け取った要件・仕様を WHY→HOW→FEASIBILITY の3軸でインタビューし、開発着手前の認識合わせドキュメントを生成 |
 | `retro` | 過去 N 時間の Claude Code セッションを横断で振り返り、作業ログを `~/.claude/retro/log/` に記録 |
+| `work-persona` | Claude Code の利用ログ（プロンプト履歴＋会話本文）を集計し、仕事の人物像を 8 軸で評価したレポートを Artifact に出す。集計は `scripts/collect.py`（標準ライブラリのみ、`python3 -m unittest` でテスト） |
 | `code-overview` | Claude が書いたコードの変更差分を分析し、アーキテクチャ・注目実装ポイントをまとめたレビュー用 HTML をプロジェクトルートに出力 |
 | `fix-loop` | self-review / check-tests / code-review などのチェック系スキルを収束まで回すループ。設計判断不要な指摘だけ直し、判断が要るものは最後に選択肢付きレポートで問う（PR 番号指定で worktree 実行） |
 
