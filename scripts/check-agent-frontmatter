@@ -1,0 +1,154 @@
+#!/usr/bin/env bash
+# Claude Code のサブエージェント定義（<dir>/*.md）の frontmatter を検証する。
+#
+# Claude Code は未知のフィールド名や値をエラーにせず無視するので、書き間違いが
+# 気付かれないまま残る。ここで公式仕様（https://code.claude.com/docs/en/sub-agents）
+# の値と突き合わせて検出する。README.md はエージェント定義ではないので検査しない。
+#
+# 使い方: scripts/check-agent-frontmatter <dir>
+set -Eeuo pipefail
+
+KNOWN_FIELDS=" name description tools disallowedTools model permissionMode maxTurns autoCompactWindow skills mcpServers hooks memory background omitClaudeMd effort isolation color initialPrompt experimental "
+MODEL_ALIASES=" sonnet opus haiku fable inherit "
+EFFORTS=" low medium high xhigh max "
+COLORS=" red blue green yellow purple orange pink cyan "
+MEMORIES=" user project local "
+
+if [[ $# -ne 1 ]]; then
+  echo "使い方: $0 <dir>" >&2
+  exit 2
+fi
+
+dir="$1"
+if [[ ! -d "$dir" ]]; then
+  echo "ディレクトリがありません: $dir" >&2
+  exit 2
+fi
+
+errors=0
+
+report() {
+  echo "$1: $2" >&2
+  errors=$((errors + 1))
+}
+
+# 値から前後の空白・行末コメント・囲みの引用符を取り除く。
+# 引用符で始まる値の中の # はコメントではないので残す。
+clean_value() {
+  local v="$1"
+  v="${v#"${v%%[![:space:]]*}"}"
+  if [[ "$v" != \"* && "$v" != \'* ]]; then
+    v=" $v"
+    v="${v%%[[:space:]]#*}"
+    v="${v# }"
+  fi
+  v="${v%"${v##*[![:space:]]}"}"
+  if [[ ${#v} -ge 2 && ( "$v" == \"*\" || "$v" == \'*\' ) ]]; then
+    v="${v:1:${#v}-2}"
+  fi
+  printf '%s' "$v"
+}
+
+# check_enum <file> <フィールド名> <値> <空白区切りの許容値>
+check_enum() {
+  if [[ "$4" != *" $3 "* ]]; then
+    report "$1" "$2 の値が無効です: \"$3\"（有効な値:${4% }）"
+  fi
+}
+
+# トップレベルのキー行。キーは引用符で囲まれていてもよく、コロンの前に空白があってもよい。
+# コロンの直後は空白か行末でなければならない（`name:a` は YAML ではキーにならない）。
+KEY_LINE_RE='^["'"'"']?([A-Za-z_][A-Za-z0-9_-]*)["'"'"']?[[:space:]]*:([[:space:]].*)?$'
+DELIMITER_RE='^---[[:space:]]*$'
+CONTINUATION_RE='^[[:space:]]+[^[:space:]]'
+
+check_file() {
+  local file="$1" line key value lineno=0 closed=0
+  local has_name=0 has_description=0 empty_key=""
+
+  # report はファイル名をメッセージに使うだけで、$file には書き込まない。
+  # shellcheck disable=SC2094
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    lineno=$((lineno + 1))
+    line="${line%$'\r'}"
+    if [[ $lineno -eq 1 ]]; then
+      if [[ ! "$line" =~ $DELIMITER_RE ]]; then
+        report "$file" "frontmatter がありません（1 行目が --- ではない）"
+        return
+      fi
+      continue
+    fi
+    if [[ "$line" =~ $DELIMITER_RE ]]; then
+      closed=1
+      break
+    fi
+    # 値を次の行以降にインデントして書いた name / description は、値ありとして扱う。
+    if [[ -n "$empty_key" && "$line" =~ $CONTINUATION_RE ]]; then
+      case "$empty_key" in
+        name) has_name=1 ;;
+        description) has_description=1 ;;
+      esac
+      continue
+    fi
+    # トップレベルのキーだけを見る。それ以外（ネストした値など）は検査しない。
+    if [[ ! "$line" =~ $KEY_LINE_RE ]]; then
+      continue
+    fi
+    key="${BASH_REMATCH[1]}"
+    value="$(clean_value "${BASH_REMATCH[2]:-}")"
+    empty_key=""
+
+    if [[ "$KNOWN_FIELDS" != *" $key "* ]]; then
+      report "$file" "未知のフィールドです: ${key}（Claude Code は無視する）"
+      continue
+    fi
+
+    case "$key" in
+      name | description)
+        if [[ -z "$value" ]]; then
+          empty_key="$key"
+        elif [[ "$key" == name ]]; then
+          has_name=1
+        else
+          has_description=1
+        fi
+        ;;
+      model)
+        # 公式の表にある形式だけを通す。Bedrock / Vertex の ID や [1m] 付きの指定は
+        # このリポジトリでは使わないので、意図して無効として扱う。
+        if [[ "$MODEL_ALIASES" != *" $value "* && ! "$value" =~ ^claude-[a-z0-9.-]+$ ]]; then
+          report "$file" "model の値が無効です: \"$value\"（有効な値:${MODEL_ALIASES% }、または claude- で始まるモデル ID）"
+        fi
+        ;;
+      effort) check_enum "$file" effort "$value" "$EFFORTS" ;;
+      color) check_enum "$file" color "$value" "$COLORS" ;;
+      memory) check_enum "$file" memory "$value" "$MEMORIES" ;;
+    esac
+  done <"$file"
+
+  if [[ $closed -eq 0 ]]; then
+    report "$file" "frontmatter がありません（閉じる --- が見つからない）"
+    return
+  fi
+  [[ $has_name -eq 1 ]] || report "$file" "name がありません"
+  [[ $has_description -eq 1 ]] || report "$file" "description がありません"
+}
+
+checked=0
+shopt -s nullglob
+for file in "$dir"/*.md; do
+  [[ "$(basename "$file")" == "README.md" ]] && continue
+  check_file "$file"
+  checked=$((checked + 1))
+done
+
+# 1 件も検査しないまま成功すると、ディレクトリの移動や指定の誤りに気付けない。
+if [[ $checked -eq 0 ]]; then
+  echo "エージェント定義が見つかりません: $dir" >&2
+  exit 1
+fi
+
+if [[ $errors -gt 0 ]]; then
+  echo "エージェント定義の frontmatter に $errors 件の問題があります" >&2
+  exit 1
+fi

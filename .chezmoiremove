@@ -1,0 +1,6 @@
+# chezmoi apply のときに target（~/ 配下）から削除するパス。
+# ソース側でリネーム・削除しても、デプロイ済みのファイルは chezmoi が消さないため、
+# 残すと害があるものをここに書く。
+
+# agent-prompt-tuner に改名済み。残っていると旧名のエージェントとして読み込まれる。
+.claude/agents/agent-doc-reviewer.md
